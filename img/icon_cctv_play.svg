@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon_cctv_play</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Apple-TV" transform="translate(-1079.000000, -831.000000)">
+            <g id="icon_cctv_play" transform="translate(1079.000000, 831.000000)">
+                <circle id="Oval" fill="#005C9A" cx="12" cy="12" r="12"></circle>
+                <g transform="translate(13.000000, 12.545455) rotate(-270.000000) translate(-13.000000, -12.545455) translate(8.000000, 8.000000)" fill="#FFFFFF" fill-rule="nonzero" id="Path">
+                    <path d="M5.71230505,0.415944541 C5.39341423,-0.13864818 4.59098786,-0.13864818 4.27036395,0.415944541 L0.112651646,7.62564991 C-0.206239168,8.17850955 0.19237435,8.87348355 0.833622182,8.87348355 L9.15077991,8.87348355 C9.79029464,8.87348355 10.1906412,8.18024264 9.87175045,7.62564991 L5.71230505,0.415944541 Z"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

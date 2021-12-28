@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="description" content="漁業署船位資訊系統 Backend System">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=no">
+	<link rel="shortcut icon" href="img/backend_img/favicon.png">
+	<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery.validate.js"></script><!-- 表單驗證 -->
+	<script type="text/javascript" src="js/jquery.metadata.js"></script><!-- 用來判斷表單驗證的長度或數字的JS -->
+	<script type="text/javascript" src="js/messages_zh_TW.js"></script>
+	<script type="text/javascript" src="js/jquery.preload.js"></script>
+	<link rel="stylesheet" href="css/siitech_sty.css">
+	<link rel="stylesheet" href="css/all.min.css">
+	<!--[if IE]>
+		<link href="/css/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+		<link href="/css/font-awesome-ie7.css" media="screen, projection" rel="stylesheet" type="text/css" />
+	<![endif]-->
+	<title>漁業署船位資訊系統 Backend System Sign in</title>
+</head>
+
+<body style="background: #02A18B;">
+	<!-- <div class="page-logo">
+		<img src="img/logo.svg" alt="">
+	</div> -->
+	<div class="login-page-mask"></div>
+	<div class="login-page-bg">
+		<div class="loain-box">
+			<form action="siitech_index.html" method="get" name="login" id="login">
+				<div class="login">
+					<div class="logo"></div>
+					<h1>漁業署船位資訊系統</h1>
+					<!-- <div class="login-note">
+						內部人員請由 <a href="http://eip2.motcmpb.gov.tw/" target="_blank">EIP登入</a>，外部人員請直接輸入帳密登入
+					</div> -->
+					<div class="input-box">
+						<i class="fad fa-address-card"></i>
+						<input type="text" name="account" placeholder="Username" class="input-sty required" />
+					</div>
+					<div class="input-box">
+						<i class="fad fa-lock-alt"></i>
+						<input type="password" name="password" placeholder="Password" class="input-sty required" />
+					</div>
+					<!-- <div class="login-error-mesg" style="display:;"><i class="fa fa-exclamation-circle"></i> 您的帳號密碼錯誤。</div> -->
+					<div class="login-btn-box">
+						<input type="submit" class="login-submit-btn" value="登入" />
+					</div>
+					<div class="login-footer">
+						© 2021, 行政院農業委員會漁業署
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(function () {
+			var validator = $("#login").validate({
+				submitHandler: function (form) {
+					form.submit();
+				}
+			});
+			function detectmob() { 
+				if( navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)
+				){
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+		});
+	</script>
+</body>
+
+</html>

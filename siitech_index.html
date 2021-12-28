@@ -1,0 +1,2044 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<!-- <meta name="keywords" content="keywords,keywords"> -->
+	<meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=no">
+	<meta name="description" content="漁業署船位資訊系統 Siitech System">
+	<link rel="shortcut icon" href="img/favicon.png"> <!-- 我的最愛圖示 -->
+	<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery.validate.js"></script><!-- 表單驗證 -->
+	<script type="text/javascript" src="js/jquery.metadata.js"></script><!-- 用來判斷表單驗證的長度或數字的JS -->
+	<script type="text/javascript" src="js/messages_zh_TW.js"></script>
+
+	<!-- 日期選擇 -->
+	<script type="text/javascript" src="js/datepicker.min.js"></script>
+	<script type="text/javascript" src="js/i18n/datepicker.zh.js"></script>
+
+	<script type="text/javascript" src="js/backend.js"></script>
+
+	<!-- 日期選擇樣式 -->
+	<link rel="stylesheet" href="css/datepicker.min.css">
+	<link rel="stylesheet" href="css/all.min.css">
+	<link rel="stylesheet" href="css/siitech_sty.css">
+	<!--[if IE]>
+		<link href="/css/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
+		<link href="/css/font-awesome-ie7.css" media="screen, projection" rel="stylesheet" type="text/css" />
+	<![endif]-->
+	<title>漁業署船位資訊系統 Siitech System</title>
+</head>
+
+<body>
+	<!-- 手機版mtnet -->
+	<!-- import 'm_mtnet.kit' -->
+	<!-- <div id="screen-log" style="background: #fff; position: fixed;  top:0; left:0; z-index: 100;"></div> -->
+	<div id="mouseYPosition" style="background: #fff; position: fixed;  top:0; left:50px; z-index: 100;"></div>
+	<div id="mask" class="mask" style="display:none;"></div>
+	<!-- lightbox 確認刪除 -->
+	<div class="lg-box lg-mesg-box" id="lgMesg" style="display:none;">
+		<div class="lg-tit">純訊息視窗</div>
+		<div class="lg-cont">
+			確定刪除?
+		</div>
+		<div class="lg-bot">
+			<div class="btn btn-cancel">取消</div>
+			<div class="btn btn-submit">確認</div>
+		</div>
+	</div>
+	<!-- main page -->
+	<div class="main-box">
+		<!-- top sub nav -->
+		<nav class="sii-top-nav">
+			<div class="btn-top-box" id="btnPageFilter">
+				<label for="shipFilter">
+					<img src="img/icon_filter.svg" alt="">
+					<span>船舶篩選</span>
+					<input type="checkbox" name="shipFilter" id="shipFilter" value="Filter">
+					<div class="act-mask"></div>
+				</label>
+			</div>
+			<div class="btn-top-box" id="btnPageZone">
+				<label for="zone">
+					<img src="img/icon_zone.svg" alt="">
+					<span>警戒區域</span>
+					<input type="checkbox" name="zone" id="zone" value="Zone">
+					<div class="act-mask"></div>
+				</label>
+			</div>
+			<div class="btn-top-box">
+				<label for="alarms">
+					<img src="img/icon_alarms.svg" alt="">
+					<span>預警設定</span>
+					<input type="checkbox" name="alarms" id="alarms" value="Alarms">
+					<div class="act-mask"></div>
+				</label>
+			</div>
+			<div class="btn-top-box">
+				<label for="events">
+					<img src="img/icon_events.svg" alt="">
+					<span>事件訊息</span>
+					<input type="checkbox" name="events" id="events" value="Events">
+					<div class="act-mask"></div>
+				</label>
+			</div>
+			<div class="btn-top-box">
+				<label for="routes">
+					<img src="img/icon_routes.svg" alt="">
+					<span>Routes</span>
+					<input type="checkbox" name="routes" id="routes" value="Routes">
+					<div class="act-mask"></div>
+				</label>
+			</div>
+			<div class="btn-top-box">
+				<label for="replay">
+					<img src="img/icon_replay.svg" alt="">
+					<span>歷史軌跡</span>
+					<input type="checkbox" name="replay" id="replay" value="歷史軌跡">
+					<div class="act-mask"></div>
+				</label>
+			</div>
+			<div class="btn-top-box">
+				<label for="reports">
+					<img src="img/icon_reports.svg" alt="">
+					<span>報表設定</span>
+					<input type="checkbox" name="reports" id="reports" value="Reports">
+					<div class="act-mask"></div>
+				</label>
+			</div>
+			<div class="btn-top-box">
+				<label for="eics">
+					<img src="img/icon_run_reports.svg" alt="">
+					<span>報表產製</span>
+					<input type="checkbox" name="eics" id="eics" value="EICS">
+					<div class="act-mask"></div>
+				</label>
+			</div>
+			<div class="btn-top-box" id="btnPageInOutPort">
+				<label for="searchShipInOut">
+					<img src="img/icon_search_out_in.svg" alt="">
+					<span>進出港查詢</span>
+					<input type="checkbox" name="searchShipInOut" id="searchShipInOut" value="">
+					<div class="act-mask"></div>
+				</label>
+			</div>
+
+			<div class="select-wrap">
+				<div class="sel-group">
+					<select name="zoneFilter" id="drpFilter" class="">
+						<option value="4">[All Cyan]</option>
+						<option value="2">[Color-Coded Length]</option>
+						<option value="3">[Color-Coded Speed]</option>
+						<option value="1">[Color-Coded Types]</option>
+						<option value="5">No Ships</option>
+					</select>
+					<div class="btn-setting">
+						<img src="img/icon_select_setting.svg" alt="">
+					</div>
+				</div>
+				<div class="sel-group">
+					<select name="drpFilter" id="drpFilter" class="">
+						<option value="4">[All Cyan]</option>
+						<option value="2">[Color-Coded Length]</option>
+						<option value="3">[Color-Coded Speed]</option>
+						<option value="1">[Color-Coded Types]</option>
+						<option value="5">No Ships</option>
+					</select>
+					<div class="btn-setting">
+						<img src="img/icon_select_setting.svg" alt="">
+					</div>
+				</div>
+				<div class="sel-group">
+					<select name="drpLocation" id="drpLocation" class="">
+						<option value="">Select Location</option>
+					</select>
+					<div class="btn-setting">
+						<img src="img/icon_select_setting.svg" alt="">
+					</div>
+				</div>
+				<div class="sel-group">
+					<input name="search" id="search" class="" placeholder="Search..." />
+					<div class="btn-setting">
+						<img src="img/icon_search.svg" alt="">
+					</div>
+				</div>
+
+			</div>
+		</nav>
+		<!-- side menu -->
+		<nav class="sii-side-nav" id="menuBox">
+			<!-- <div class="menu" id="menu">
+				<div></div>
+				<span></span>
+			</div> -->
+			<div class="side-top-logo">
+				<img src="img/backend_img/backend_logo.svg" alt="">
+			</div>
+			<div class="user-info">
+        <div class="user-id">
+            <span>AdminAdmin</span>
+        </div>
+        <div class="user-setting">
+            <a href="###">
+                <i class="fad fa-cog"></i>
+            </a>
+            <a href="index.html" class="sign-out">
+                <i class="fad fa-sign-out"></i>
+            </a>
+        </div>
+			</div>
+			<div class="side-btn-group">
+				<div class="btn-side-box" id="btnShipInfoOpen" title="顯示設定">
+					<label for="shipInfo">
+						<img src="img/icon_ship.svg" alt="">
+						<input type="checkbox" name="shipInfo" id="shipInfo" value="Ship Information">
+						<div class="act-mask"></div>
+						<p>顯示設定</p>
+					</label>
+				</div>
+				<div class="btn-side-box" id="btnMpasOpen" title="地圖選擇">
+					<label for="maps">
+						<img src="img/icon_maps.svg" alt="">
+						<input type="checkbox" name="maps" id="maps" value="Maps">
+						<div class="act-mask"></div>
+						<p>地圖選擇</p>
+					</label>
+				</div>
+				<div class="btn-side-box" id="btnLayersOpen" title="圖層選擇">
+					<label for="layers">
+						<img src="img/icon_layer.svg" alt="">
+						<input type="checkbox" name="layers" id="layers" value="Layers">
+						<div class="act-mask"></div>
+						<p>圖層選擇</p>
+					</label>
+				</div>
+				<div class="btn-side-box" title="船舶列表">
+					<label for="shipList">
+						<img src="img/icon_ship_list.svg" alt="">
+						<input type="checkbox" name="shipList" id="shipList" value="Ship List">
+						<div class="act-mask"></div>
+						<p>船舶列表</p>
+					</label>
+				</div>
+				<div class="btn-side-box" title="測量工具">
+					<label for="measure">
+						<img src="img/icon_measure.svg" alt="">
+						<input type="checkbox" name="measure" id="measure" value="Measure">
+						<div class="act-mask"></div>
+						<p>測量工具</p>
+					</label>
+				</div>
+				<div class="btn-side-box" id="btnRadiusOpen" title="測量半徑">
+					<label for="meaRadius">
+						<img src="img/icon_radius.svg" alt="">
+						<input type="checkbox" name="meaRadius" id="meaRadius" value="Measuring radius">
+						<div class="act-mask"></div>
+						<p>半徑測量</p>
+					</label>
+				</div>
+				<div class="btn-side-box" id="btnEtaOpen" title="顯示圖例">
+					<label for="shipLegend">
+						<img src="img/icon_legend.svg" alt="">
+						<input type="checkbox" name="shipLegend" id="shipLegend" value="Show Legend">
+						<div class="act-mask"></div>
+						<p>顯示圖例</p>
+					</label>
+				</div>
+				<div class="btn-side-box" id="btnShipList" title="顯示船舶">
+					<label for="shipNamesList">
+						<img src="img/icon_show_name_list.svg" alt="">
+						<input type="checkbox" name="shipNamesList" id="shipNamesList" value="Show Ship Name List">
+						<div class="act-mask"></div>
+						<p>顯示船舶</p>
+					</label>
+				</div>
+				<div class="btn-side-box" id="btnShipLatLonOpen" title="座標定位">
+					<label for="shipLNL">
+						<img src="img/icon_ship_latitude_longitude.svg" alt="">
+						<input type="checkbox" name="shipLNL" id="shipLNL" value="Ship Latitude and Longitude">
+						<div class="act-mask"></div>
+						<p>座標定位</p>
+					</label>
+				</div>
+				<div class="btn-side-box" id="btnGpsOpen" title="軌跡上傳">
+					<label for="upload">
+						<img src="img/icon_upload.svg" alt="">
+						<input type="checkbox" name="upload" id="upload" value="Upload">
+						<div class="act-mask"></div>
+						<p>軌跡上傳</p>
+					</label>
+				</div>
+			</div>
+		</nav>
+		<!-- side menu 1 -->
+		<div class="side-position-box two-col" id="shipInfoBox" style="display: none;">
+			<label for="showNames">
+				<img src="img/icon_show_names.svg" alt="">
+				<input type="checkbox" name="showNames" id="showNames" value="Show Names">
+				<div class="act-mask"></div>
+				<span>顯示名稱</span>
+			</label>
+			<label for="menuShipInfo">
+				<img src="img/icon_info.svg" alt="">
+				<input type="checkbox" name="menuShipInfo" id="menuShipInfo" value="Show Ship Information">
+				<div class="act-mask"></div>
+				<span>顯示資訊看板</span>
+			</label>
+			<label for="showBalloon">
+				<img src="img/icon_show_balloon.svg" alt="">
+				<input type="checkbox" name="showBalloon" id="showBalloon" value="Show Balloon">
+				<div class="act-mask"></div>
+				<span>顯示資訊視窗</span>
+			</label>
+			<label for="showShipTracks">
+				<img src="img/icon_ship_tracks.svg" alt="">
+				<input type="checkbox" name="showShipTracks" id="showShipTracks" value="Show Ship Tracks">
+				<div class="act-mask"></div>
+				<span>顯示軌跡</span>
+			</label>
+			<label for="followShip">
+				<img src="img/icon_follow_ship.svg" alt="">
+				<input type="checkbox" name="followShip" id="followShip" value="follow Ship">
+				<div class="act-mask"></div>
+				<span>跟隨選定船舶</span>
+			</label>
+			<label for="selShip">
+				<img src="img/icon_selected_ship.svg" alt="">
+				<input type="checkbox" name="selShip" id="selShip" value="Selected Ship">
+				<div class="act-mask"></div>
+				<span>只顯示選定船舶</span>
+			</label>
+		</div>
+		<!-- side menu 2 maps -->
+		<div class="side-position-box two-col" id="mapsBox" style="display:none; top: 135px;">
+			<label for="openstreetmap">
+				<img src="img/icon_openstreetmap.svg" alt="">
+				<input type="checkbox" name="openstreetmap" id="openstreetmap" value="Open Street Maps">
+				<div class="act-mask"></div>
+				<span>開放街道地圖</span>
+			</label>
+			<label for="bingMaps">
+				<img src="img/icon_bing_map.svg" alt="">
+				<input type="checkbox" name="bingMaps" id="bingMaps" value="Bing Maps">
+				<div class="act-mask"></div>
+				<span>微軟地圖</span>
+			</label>
+			<label for="satellite">
+				<img src="img/icon_satellite.svg" alt="">
+				<input type="checkbox" name="satellite" id="satellite" value="Satellite">
+				<div class="act-mask"></div>
+				<span>衛星地圖</span>
+			</label>
+			<label for="hybrid">
+				<img src="img/icon_hybrid.svg" alt="">
+				<input type="checkbox" name="hybrid" id="hybrid" value="Hybrid">
+				<div class="act-mask"></div>
+				<span>混合地圖</span>
+			</label>
+		</div>
+
+		<!-- side 圖層選擇 -->
+		<div class="side-position-box two-col" id="layersBox" style="display:none; top: 100px;">
+			<div class="layer-list-box">
+				<ul>
+					<li>
+						<input type="checkbox" name="areaGroup" id="checkAll">
+						<label for="checkAll">全選</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer1">
+						<label for="layer1">人工魚礁網具類禁漁區</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer2">
+						<label for="layer2">叉手網禁漁區</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer3">
+						<label for="layer3">水產動植物繁殖保育區</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer4">
+						<label for="layer4">扒網漁業禁漁區</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer5">
+						<label for="layer5">赤尾青蝦</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer6">
+						<label for="layer6">刺網漁業禁漁區</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer7">
+						<label for="layer7">所有方式</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer8">
+						<label for="layer8">拖網漁業禁漁區</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer9">
+						<label for="layer9">保護礁網具類禁漁區</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer10">
+						<label for="layer10">流袋網禁漁區</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer11">
+						<label for="layer11">珊瑚礁禁漁區</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer12">
+						<label for="layer12">珊瑚礁/軟骨魚類/無脊椎動物禁漁區</label> 
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer13">
+						<label for="layer13">浮魚礁試驗</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer14">
+						<label for="layer14">海洋牧場</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer15">
+						<label for="layer15">特定物種採捕體長限制</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer16">
+						<label for="layer16">特定物種禁漁區</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer17">
+						<label for="layer17">魚槍禁漁區</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer18">
+						<label for="layer18">蜈蚣網禁漁區</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer19">
+						<label for="layer19">網具類禁漁區</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer20">
+						<label for="layer20">網具類/燈火漁業/籠具漁業禁漁區、潛水採捕</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer21">
+						<label for="layer21">燈火漁業禁漁區</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer22">
+						<label for="layer22">燈火漁業/籠具漁業禁漁區、潛水採捕</label> 
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer23">
+						<label for="layer23">燈火漁業禁漁區、珊瑚礁、飛魚</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer24">
+						<label for="layer24">鎖管棒受網漁業禁漁區</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer25">
+						<label for="layer25">櫻花蝦</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer26">
+						<label for="layer26">籠具漁業禁漁區</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer27">
+						<label for="layer27">鰻苗漁業禁漁區</label>
+					</li>
+					<li>
+						<input type="checkbox" name="areaGroup" id="layer28">
+						<label for="layer28">鱙漁業禁漁區</label>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- side menu 6 Ship ETA -->
+		<div class="side-position-box input-ui-group" id="shipEtaBox" style="display:none;">
+			<h2>Ship ETA</h2>
+			<div class="input-ui">
+				<form action="">
+					<h3>Name</h3>
+					<input type="text" class="input-sty ship-name" name="shipNameVal" id="shipNameVal" value="">
+					<h3>Refresh every</h3>
+					<input type="text" class="input-sty" name="refreshVal" id="refreshVal" value="">
+					<span>Sec</span>
+
+					<h3>Route</h3>
+					<select class="select-sty" name="selRoute" id="selRoute" value="">
+						<option value="">Select Route</option>
+					</select>
+					<span>Waypoint Distance Esti mated Time of Arrival</span>
+					<input type="submit" class="btn btn-submit" value="Set" />
+				</form>
+			</div>
+			<h2>Route ETA</h2>
+			<div class="input-ui">
+				<form action="">
+					<h3>Route</h3>
+					<select class="select-sty" name="selRouteEta" id="selRouteEta" value="">
+						<option value="">Select Route</option>
+					</select>
+					<h3>Refresh every</h3>
+					<input type="text" class="input-sty" name="etaRefreshVal" id="etaRefreshVal" value="">
+					<span>Sec</span>
+					<input type="submit" class="btn btn-submit" value="Set" />
+				</form>
+			</div>
+		</div>
+		<!-- side 測量半徑 -->
+		<div class="side-position-box input-ui-group" id="radiusBox" style="display:none; top: 290px">
+			<h2>半徑測量設定</h2>
+			<div class="input-ui">
+				<form action="">
+					<span>範圍</span>
+					<input type="text" class="input-sty" name="seaMile" id="seaMile" value="">
+					<span>海哩</span>
+					<input type="submit" class="btn btn-submit" value="設定" />
+				</form>
+			</div>
+			<div class="input-ui-res">
+				查詢結果： <i>12</i> 艘
+			</div>
+			<input type="submit" class="btn btn-cancel" value="清除" />
+		</div>
+
+		<!-- side menu 8 Ship Latitude and Longitude -->
+		<div class="side-position-box input-ui-group" id="shipLatLonBox" style="display:none;">
+			<h2>
+				Latitude and longitude
+			</h2>
+			<div class="input-ui">
+				<h3>
+					緯度
+					<div class="btn btn-blue btn-change-dms" id="btnChange">切換度分秒</div>
+				</h3>
+				<div class="decimal">
+					<input type="text" class="input-sty" name="latitude04" id="latitude04" value="22.648117">
+					<span>度</span>
+				</div>
+
+				<div class="dms" style="display: none;">
+					<input type="text" class="input-sty" name="latitude01" id="latitude01" value="22">
+					<span>度</span>
+					<input type="text" class="input-sty" name="latitude02" id="latitude02" value="38">
+					<span>分</span>
+					<input type="text" class="input-sty" name="latitude03" id="latitude03" value="53">
+					<span>秒</span>
+				</div>
+			</div>
+
+			<div class="input-ui">
+				<h3>
+					經度
+				</h3>
+				<div class="decimal">
+					<input type="text" class="input-sty" name="longitude04" id="longitude04" value="120.234131">
+					<span>度</span>
+				</div>
+				<div class="dms" style="display: none;">
+					<input type="text" class="input-sty" name="longitude01" id="longitude01" value="120">
+					<span>度</span>
+					<input type="text" class="input-sty" name="longitude02" id="longitude02" value="14">
+					<span>分</span>
+					<input type="text" class="input-sty" name="longitude03" id="longitude03" value="2.87">
+					<span>秒</span>
+				</div>
+			</div>
+
+			<input type="submit" class="btn btn-submit" value="Search" />
+			<input type="submit" class="btn btn-cancel" value="Clear" />
+		</div>
+
+		<!-- side menu 11 GPS upload -->
+		<div class="tit position-box side-use" id="gpsBox" style="display:none;">
+			<h2>
+				GPS Upload
+				<div class="btn-close">
+					<img src="img/icon_close.svg" alt="">
+				</div>
+			</h2>
+			<div class="inline-cont">
+				<div class="upload-form-file form-file-green">
+					<div class="form-file">
+						<input type="file" name="uploadFile" id="uploadFile">
+						<i class="fad fa-cloud-upload-alt"></i> Upload File
+					</div>
+					<span id="fileNameBox" class="file-name-green"></span>
+				</div>
+				<div class="all-check">
+					<label for="allCheck" id="btnAllCheck">
+						<input type="checkbox" checked id="allCheck">
+						<span>全選</span>
+					</label>
+				</div>
+				<ul class="ship-list-upload">
+					<li>
+						<!-- 加入顏色 RGB或是HEX都可以-->
+						<label for="target1">
+							<div class="item-group" style="border-color: #f00;">
+								<div class="item-name">船名</div>
+								<div class="item-val">Whitenight</div>
+								<div class="item-name">MMSI</div>
+								<div class="item-val">47852254</div>
+								<div class="item-name">國籍</div>
+								<div class="item-val">Taiwan</div>
+								<div class="item-name">開始時間</div>
+								<div class="item-val">2020/09/17 12:22</div>
+								<div class="item-name">結束時間</div>
+								<div class="item-val">2020/09/17/15:00</div>
+							</div>
+							<div class="control-item">
+								<input type="checkbox" checked id="target1">
+							</div>
+						</label>
+						<!-- <div class="del-ship-upload">
+							<img src="img/icon_close.svg" alt="">
+						</div> -->
+					</li>
+					<li>
+						<label for="target2">
+							<div class="item-group" style="border-color: #369;">
+								<div class="item-name">船名</div>
+								<div class="item-val">Whitenight</div>
+								<div class="item-name">MMSI</div>
+								<div class="item-val">47852254</div>
+								<div class="item-name">國籍</div>
+								<div class="item-val">Korea</div>
+								<div class="item-name">開始時間</div>
+								<div class="item-val">2020/09/17 12:22</div>
+								<div class="item-name">結束時間</div>
+								<div class="item-val">2020/09/17/15:00</div>
+							</div>
+							<div class="control-item">
+								<input type="checkbox" checked id="target2">
+							</div>
+						</label>
+					</li>
+					<li>
+						<label for="target3">
+							<div class="item-group" style="border-color: #33e240;">
+								<div class="item-name">船名</div>
+								<div class="item-val">Whitenight</div>
+								<div class="item-name">MMSI</div>
+								<div class="item-val">47852254</div>
+								<div class="item-name">國籍</div>
+								<div class="item-val">Japan</div>
+								<div class="item-name">開始時間</div>
+								<div class="item-val">2020/09/17 12:22</div>
+								<div class="item-name">結束時間</div>
+								<div class="item-val">2020/09/17/15:00</div>
+							</div>
+							<div class="control-item">
+								<input type="checkbox" checked id="target3">
+							</div>
+						</label>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- page box -->
+		<div class="tit ship-list" id="pageShipList" style="display: none;">
+			<h2>
+				船舶列表
+				<div class="btn-close">
+					<img src="img/icon_close.svg" alt="">
+				</div>
+			</h2>
+			<select size="4" id="lstNames" class="ShipNameList">
+				<option value="000619312">000619312 (6m)</option>
+				<option value="004161807">004161807 (3m)</option>
+				<option value="004163400">004163400 (3m)</option>
+				<option value="073107311">07310731-1 90% (14m)</option>
+				<option value="086545788">086545788-8 90% (3m)</option>
+				<option value="086545789">086545789-9 90% (3m)</option>
+				<option value="098339267">098339267 (34m)</option>
+				<option value="098339294">098339294 (34m)</option>
+				<option value="248394613">1 (21m)</option>
+				<option value="106000000">106000000 (1m)</option>
+				<option value="150310308">150310308 (9m)</option>
+				<option value="168668007">168668007 (3m)</option>
+				<option value="168668009">168668009 (3m)</option>
+				<option value="168668014">168668014 (3m)</option>
+				<option value="168668002">168668-2 30% (4m)</option>
+				<option value="200013315">200013315 (54m)</option>
+				<option value="200014733">200014733 (4m)</option>
+				<option value="200015987">200015987 (3m)</option>
+				<option value="200016076">200016076 (3m)</option>
+				<option value="200017235">200017235 (3m)</option>
+				<option value="200020780">200020780 (18m)</option>
+				<option value="200020789">200020789 (3m)</option>
+				<option value="200021434">200021434 (3m)</option>
+				<option value="200023479">200023479 (43m)</option>
+				<option value="200036228">200036228 (4m)</option>
+				<option value="200036229">200036229 (4m)</option>
+				<option value="200058717">200058717 (3h 55m)</option>
+				<option value="200123456">200123456 (3m)</option>
+				<option value="200528034">200528034 (1h 41m)</option>
+				<option value="200660165">200660165 (3m)</option>
+				<option value="201601255">201601255 (3m)</option>
+				<option value="222777702">222777702 (3m)</option>
+				<option value="222777706">222777706 (3m)</option>
+				<option value="222777707">222777707 (3m)</option>
+				<option value="264890011">26489-11 90% (3m)</option>
+				<option value="307200016">3072-16 (8m)</option>
+				<option value="317507510">317507510 (4m)</option>
+				<option value="317507511">317507511 (4m)</option>
+				<option value="317507512">317507512 (4m)</option>
+				<option value="317507513">317507513 (3m)</option>
+				<option value="317507514">317507514 (3m)</option>
+				<option value="317507551">317507551 (3m)</option>
+				<option value="317507552">317507552 (4m)</option>
+				<option value="317507553">317507553 (4m)</option>
+				<option value="317507554">317507554 (3m)</option>
+				<option value="317507555">317507555 (3m)</option>
+				<option value="317507556">317507556 (5m)</option>
+				<option value="317507557">317507557 (4m)</option>
+				<option value="317507558">317507558 (3m)</option>
+				<option value="317507559">317507559 (4m)</option>
+				<option value="353535002">353535002 (3m)</option>
+				<option value="353535006">353535006 (3m)</option>
+				<option value="353535008">353535008 (3m)</option>
+				<option value="363660002">363660002 (4m)</option>
+				<option value="387200017">387200017 (5h 27m)</option>
+				<option value="098319666">3872-11 (5m)</option>
+				<option value="098319804">3872-14 (15m)</option>
+				<option value="098324534">3872-15 (4m)</option>
+				<option value="412005429">412005429 (3m)</option>
+				<option value="415344117">415344117 (47m)</option>
+				<option value="416002397">416002397 (1h 43m)</option>
+				<option value="416003172">416003172 (5h 5m)</option>
+				<option value="416004786">416004786 (3h 47m)</option>
+				<option value="416026706">416026706 (1h 29m)</option>
+				<option value="416220114">416220114 (5h )</option>
+				<option value="416315513">416419704 (3m)</option>
+				<option value="416501111">416501111 (4h 59m)</option>
+				<option value="416575705">416575705 (5h 29m)</option>
+				<option value="416895000">416895000 (3m)</option>
+				<option value="419000007">4190-07 (3m)</option>
+				<option value="419206312">419206312 (4h 56m)</option>
+				<option value="419700001">419700001 (3m)</option>
+				<option value="419700005">419700005 (4m)</option>
+				<option value="419700009">419700009 (3m)</option>
+				<option value="419700010">419700010 (3m)</option>
+				<option value="441026003">441026-03 (3m)</option>
+				<option value="441026006">441026-06 (3m)</option>
+				<option value="416446901">4469-01 (4m)</option>
+				<option value="416446904">4469-04 (3m)</option>
+				<option value="479800002">479800002 6 (4m)</option>
+				<option value="479800005">479800005 6 (5m)</option>
+				<option value="479800010">479800010 7 (8m)</option>
+				<option value="479800001">4798-01 (4m)</option>
+				<option value="479800004">4798-04 (3m)</option>
+				<option value="479800006">4798-06 (8m)</option>
+				<option value="479800008">4798-08 (3m)</option>
+				<option value="500302001">500302-1 90% (3m)</option>
+				<option value="500300004">50030-4-70% (4m)</option>
+				<option value="928002306">5376-0601% (5m)</option>
+				<option value="555555501">55555-01 (6m)</option>
+				<option value="575700001">5757-1-60% (5h 32m)</option>
+				<option value="575700002">5757-2 70% (5h 31m)</option>
+				<option value="575700003">5757-3-60% (5h 30m)</option>
+				<option value="575700004">5757-4 90% (5h 29m)</option>
+				<option value="577663750">577663750 (4h 40m)</option>
+				<option value="617400011">6174-11 (3m)</option>
+				<option value="632800003">6328-03 (3m)</option>
+				<option value="667001608">667001608 (3m)</option>
+				<option value="668026991">668026991 (40m)</option>
+				<option value="000000808">6P4J2) &lt;3518D-4?*(,2 (4m)</option>
+				<option value="2147483647">-- 下一頁 --</option>
+			</select>
+		</div>
+		<div class="tit position-box" id="pageFilter" style="display: none;">
+			<h2>
+				Filters
+				<div class="btn-close">
+					<img src="img/icon_close.svg" alt="">
+				</div>
+			</h2>
+			<div class="inline-cont">
+				<div class="input-box">
+					<label for="selFilter">選擇過濾器</label>
+					<select name="selFilter" id="selFilter" class="select-sty">
+						<option value="">New</option>
+						<option value="1">No Ships</option>
+					</select>
+				</div>
+				<div class="input-box">
+					<label for="filterName">過濾器名稱</label>
+					<input type="text" class="input-sty" name="filterName" id="filterName" value="">
+				</div>
+			</div>
+		</div>
+		<div class="tit position-box" id="pageZone" style="display: none;">
+			<h2>
+				Zones
+				<div class="btn-close">
+					<img src="img/icon_close.svg" alt="">
+				</div>
+			</h2>
+			<div class="inline-cont">
+				<div class="input-box">
+					<label for="selZone">Select Zone</label>
+					<select name="selZone" id="selZone" class="select-sty">
+						<option value="">New</option>
+						<option value="1">No Ships</option>
+					</select>
+				</div>
+				<div class="input-box">
+					<label for="zoneName">Zone Name</label>
+					<input type="text" class="input-sty" name="zoneName" id="zoneName" value="">
+				</div>
+				<div class="input-box">
+					<label for="selZone">Zone Type</label>
+					<select name="selZone" id="selZone" class="select-sty">
+						<option value="">Polygon</option>
+					</select>
+					<label for="enable" class="sub-checkbox">
+						<input type="checkbox" name="enable" id="enable">
+						<div class="check-boxs">
+							<img src="img/icon_check.svg" alt="">
+						</div>
+						<span>Enable</span>
+					</label>
+				</div>
+				<div class="input-box">
+					<label for="selZone">Color</label>
+					<select name="selZone" id="selZone" class="select-sty">
+						<option value="">Chocolate</option>
+					</select>
+					<label for="Fill" class="sub-checkbox">
+						<input type="checkbox" name="Fill" id="Fill">
+						<div class="check-boxs">
+							<img src="img/icon_check.svg" alt="">
+						</div>
+						<span>Fill</span>
+					</label>
+				</div>
+				<div class="input-box">
+					<label for="selZone">Lat/Lng Format</label>
+					<select name="selZone" id="selZone" class="select-sty">
+						<option value="">Degrees, Minutes, Hemisphere</option>
+					</select>
+				</div>
+				<div class="input-box">
+					<label for="selZone">-</label>
+					<select name="selZone" id="selZone" class="select-sty">
+						<option value="">-- change lat/lng format --</option>
+					</select>
+				</div>
+				<div class="input-box w">
+					<label for="desc">Coordinates</label>
+					<textarea name="desc" id="desc" placeholder="..." class="input-sty desc-info"></textarea>
+				</div>
+				<div class="btn-group">
+					<div class="btn btn-green">Set Zone Point(s)</div>
+					<div class="right-bt">
+						<div class="btn btn-submit">OK</div>
+						<div class="btn btn-submit">Apply</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<!-- 進出港查詢 -->
+		<div class="tit position-box" id="pageInOutPort" style="display:none;">
+			<h2>
+				進出口查詢
+				<div class="btn-close">
+					<img src="img/icon_close.svg" alt="">
+				</div>
+			</h2>
+			<div class="inline-cont">
+				<!-- 暫時不用
+				<div class="input-box w radio-input">
+					<label for="selZone">查詢條件</label>
+					<div class="radio-group">
+						<label for="type1">
+							<input type="radio" name="searchType" id="type1" checked>
+							<div class="radio-box"></div>
+							<span>CT編號</span>
+						</label>
+					</div>
+					<div class="radio-group">
+						<label for="type2">
+							<input type="radio" name="searchType" id="type2">
+							<div class="radio-box"></div>
+							<span>漁港</span>
+						</label>
+					</div>
+					<div class="radio-group">
+						<label for="type3">
+							<input type="radio" name="searchType" id="type3">
+							<div class="radio-box"></div>
+							<span>查詢時間區間</span>
+						</label>
+					</div>
+				</div> -->
+				<div class="input-box" id="ctNameUI">
+					<label for="ctName">CT編號</label>
+					<input type="text" class="input-sty" name="ctName" id="ctName" value="">
+				</div>
+				<div class="input-box" id="FishingPortUI">
+					<label for="FishingPort">漁港名稱</label>
+					<input type="text" class="input-sty" name="FishingPort" id="FishingPort" value="">
+				</div>
+				<div class="input-box icon-right" id="dateStartUI">
+					<label for="dateStart">開始日期</label>
+					<input type="text" class="input-sty required datepicker-here" autocomplete="off" name="dateStart" id="dateStart" value="">
+					<i class="fad fa-calendar-alt"></i>
+				</div>
+				<div class="input-box icon-right" id="dateEndUI">
+					<label for="dateEnd">結束日期</label>
+					<input type="text" class="input-sty required datepicker-here" autocomplete="off" name="dateEnd" id="dateEnd" value="">
+					<i class="fad fa-calendar-alt"></i>
+				</div>
+				<div class="btn-group">
+					<div></div>
+					<div class="right-bt">
+						<div class="btn btn-submit">查詢</div>
+					</div>
+				</div>
+				<!-- 查詢結果 -->
+				<div class="in-out-result" style="display: ;">
+					<h3>查詢結果</h3>
+					<ul class="list">
+						<li class="title">
+							<div class="group-box-100">
+								<div class="box-8 txt-c">序號</div>
+								<div class="box-25">漁船統一編號</div>
+								<div class="box-15">發生日期</div>
+								<div class="box-15">發生時間 </div>
+								<div class="box-15">港口代碼</div>
+								<div class="box-15">事件</div>
+							</div>
+						</li>
+						<li>
+							<div class="group-box-100">
+								<div class="box-8 txt-c">1</div>
+								<div class="box-25">CT RPT3785 </div>
+								<div class="box-15">211105</div>
+								<div class="box-15">20:32:44</div>
+								<div class="box-15">43B2</div>
+								<div class="box-15">出港</div>
+							</div>
+						</li>
+						<li>
+							<div class="group-box-100">
+								<div class="box-8 txt-c">2</div>
+								<div class="box-25">CT RPT3785 </div>
+								<div class="box-15">211105</div>
+								<div class="box-15">13:11:00 </div>
+								<div class="box-15">43B2</div>
+								<div class="box-15">入港</div>
+							</div>
+						</li>
+						<li>
+							<div class="group-box-100">
+								<div class="box-8 txt-c">3</div>
+								<div class="box-25">CT RPT3785 </div>
+								<div class="box-15">211105</div>
+								<div class="box-15">03:21:00 </div>
+								<div class="box-15">43B2</div>
+								<div class="box-15">出港</div>
+							</div>
+						</li>
+						<li>
+							<div class="group-box-100">
+								<div class="box-8 txt-c">4</div>
+								<div class="box-25">CT RPT3785 </div>
+								<div class="box-15">211105</div>
+								<div class="box-15">15:41:00 </div>
+								<div class="box-15">43B2</div>
+								<div class="box-15">入港</div>
+							</div>
+						</li>
+					</ul>
+					<div class="btn-group">
+						<div></div>
+						<div class="right-bt">
+							<div class="btn btn-submit">匯出報表</div>
+						</div>
+					</div>
+				</div>
+
+				
+			</div>
+		</div>
+
+
+		<!-- MTNet & AIS layout page -->
+		<div class="tit position-box" id="pageShipDetial" style="display:none;">
+			<h2>
+				<span>JGJ AIS TEST SHIPJGJ</span> 詳細資訊
+				<div class="btn-unfold">
+					<img src="img/icon_unfold_big.svg" alt="">
+				</div>
+				<div class="btn-close">
+					<img src="img/icon_close.svg" alt="">
+				</div>
+			</h2>
+			<div class="tap-group">
+				<div class="tap-left-group">
+					<div class="btn-tab act" id="shipInfoPage">基本資料</div>
+					<div class="btn-tab" id="shipTravelerPage">船體資料</div>
+					<div class="btn-tab" id="shipInOutPort">進出口資訊</div>
+				</div>
+			</div>
+
+			<!-- MTNet -->
+			<div class="inline-cont inline-cont-h" id="mtnetBox" style="display:;">
+				<div class="info-group" id="shipInfoPoint">
+					<h3>基本資料</h3>
+					<div class="txt-group">
+						<h4>船舶號數船舶號數</h4>
+						<p>
+							<span>013647</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>中文船名</h4>
+						<p>
+							<span>大益</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>英文船名</h4>
+						<p>
+							<span>TA YIH</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>所有人名稱</h4>
+						<p>
+							<span>大吉航運股份有限公司</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>所有人英文名</h4>
+						<p>
+							<span></span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>船舶營運人</h4>
+						<p>
+							<span></span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>船籍港</h4>
+						<p>
+							<span>(KH)高雄港</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>船舶種類</h4>
+						<p>
+							<span>B41 (B41雜貨船)</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>船舶等級</h4>
+						<p>
+							<span>(09)航行外海航線之非客船</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>試航水域</h4>
+						<p>
+							<span>(08)外海</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>電台呼號</h4>
+						<p>
+							<span>BR3148</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>水上行動業務識別</h4>
+						<p>
+							<span>416000025</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>船員定額</h4>
+						<p>
+							<span>13</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>乘客定額</h4>
+						<p>
+							<span>0</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>特種人員定額</h4>
+						<p>
+							<span></span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>航線</h4>
+						<p>
+							<span>K6 K6</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>下水日期</h4>
+						<p>
+							<span>078/01/01</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>CR編號</h4>
+						<p>
+							<span></span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>CT編號</h4>
+						<p>
+							<span>CT</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>IMO編號</h4>
+						<p>
+							<span></span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>所屬漁會</h4>
+						<p>
+							<span></span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>停泊地</h4>
+						<p>
+							<span></span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>最近特檢日期</h4>
+						<p>
+							<span>106/05/03</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>漁業執照字號</h4>
+						<p>
+							<span></span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>字第 號</h4>
+						<p>
+							<span></span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>漁業執照有效日</h4>
+						<p>
+							<span></span>
+						</p>
+					</div>
+				</div>
+
+				<div class="info-group" id="shipTravelerPoint">
+					<h3>船體資料</h3>
+					<div class="txt-group">
+						<h4>HullNo</h4>
+						<p>
+							<span></span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>建造廠名(中)</h4>
+						<p>
+							<span>其他</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>建造廠名(英)</h4>
+						<p>
+							<span></span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>建造地點(中)</h4>
+						<p>
+							<span>日本</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>建造地點(英)</h4>
+						<p>
+							<span></span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>建造廠名補充說</h4>
+						<p>
+							<span>藤新造船會社</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>建造完成年月</h4>
+						<p>
+							<span>07801</span> (YYYMM)
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>新舊船別</h4>
+						<p>
+							<input type="radio" name="shipNew"> 新船
+							<input type="radio" name="shipNew"> 現成船
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>船型</h4>
+						<p>
+							<span>(B+)乙型修加</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>總噸位</h4>
+						<p>
+							<span>982.00</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>淨噸位</h4>
+						<p>
+							<span>294.00</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>載重噸位</h4>
+						<p>
+							<span>1,059.000</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>排水量</h4>
+						<p>
+							<span>1,842.848</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>總長度</h4>
+						<p>
+							<span>59.40</span> M
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>船長</h4>
+						<p>
+							<span>55.25</span> M
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>法長</h4>
+						<p>
+							<span>55.00</span> M
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>貨櫃量(TEU)</h4>
+						<p>
+							<span>0</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>最大速率</h4>
+						<p>
+							<span>12.07</span> 節
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>航行速率</h4>
+						<p>
+							<span>11.00</span> 節
+						</p>
+					</div>
+				</div>
+
+				<div class="info-group" id="shipInOutPoint">
+					<h3>進出港資訊</h3>
+					<ul class="list">
+						<li class="title">
+							<div class="group-box-100">
+								<div class="box-8 txt-c">序號</div>
+								<div class="box-25">漁船統一編號</div>
+								<div class="box-15">發生日期</div>
+								<div class="box-15">發生時間 </div>
+								<div class="box-15">港口代碼</div>
+								<div class="box-15">事件</div>
+							</div>
+						</li>
+						<li>
+							<div class="group-box-100">
+								<div class="box-8 txt-c">1</div>
+								<div class="box-25">CT RPT3785 </div>
+								<div class="box-15">211105</div>
+								<div class="box-15">20:32:44</div>
+								<div class="box-15">43B2</div>
+								<div class="box-15">出港</div>
+							</div>
+						</li>
+						<li>
+							<div class="group-box-100">
+								<div class="box-8 txt-c">2</div>
+								<div class="box-25">CT RPT3785 </div>
+								<div class="box-15">211106</div>
+								<div class="box-15">13:11:00 </div>
+								<div class="box-15">43B2</div>
+								<div class="box-15">入港</div>
+							</div>
+						</li>
+						<li>
+							<div class="group-box-100">
+								<div class="box-8 txt-c">3</div>
+								<div class="box-25">CT RPT3785 </div>
+								<div class="box-15">211107</div>
+								<div class="box-15">03:21:00 </div>
+								<div class="box-15">43B2</div>
+								<div class="box-15">出港</div>
+							</div>
+						</li>
+						<li>
+							<div class="group-box-100">
+								<div class="box-8 txt-c">4</div>
+								<div class="box-25">CT RPT3785 </div>
+								<div class="box-15">211108</div>
+								<div class="box-15">15:41:00 </div>
+								<div class="box-15">43B2</div>
+								<div class="box-15">入港</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+
+			</div>
+
+			<!-- 旅客名冊 -->
+			<div class="inline-cont inline-cont-ais" id="travelerBox" style="display: none;">
+				<div class="info-group" id="onePoint">
+					<h3>船舶資料</h3>
+					<div class="txt-group txt-group-w">
+						<h4>公司名稱</h4>
+						<p>
+							<span>翔運貿易有限公司</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>船舶名稱</h4>
+						<p>
+							<span>SHUENN CHANG NO.17</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>出發地點</h4>
+						<p>
+							<span>Taiwan</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>出發時間</h4>
+						<p>
+							<span>2020/9/18 04:59</span>
+						</p>
+					</div>
+					<div class="txt-group">
+						<h4>開航時間</h4>
+						<p>
+							<span>2020/9/18 04:59</span>
+						</p>
+					</div>
+				</div>
+				<div class="info-group">
+					<h3>人員資料</h3>
+					<div class="table-scroll" style="margin: 0;">
+						<table class="siitech-table" style="margin: 0;">
+							<tbody>
+								<tr>
+									<th>姓名</th>
+									<th>年齡</th>
+									<th>性別</th>
+									<th>連絡電話</th>
+								</tr>
+								<tr>
+									<td>黃炳盛</td>
+									<td>39</td>
+									<td>男</td>
+									<td>--</td>
+								</tr>
+								<tr>
+									<td>劉重工</td>
+									<td>25</td>
+									<td>男</td>
+									<td>0980775221</td>
+								</tr>
+								<tr>
+									<td>李世賢</td>
+									<td>41</td>
+									<td>男</td>
+									<td>0911554221</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<!-- 訊息通知 -->
+		<div class="notice-lightbox" id="noticeConfirm" style="display: none;">
+			<div class="notice-lightbox-cont">
+				<div class="icon-post">
+					<img src="img/icon_send.svg" alt="">
+				</div>
+				<h2>即將送出訊息</h2>
+				<p>
+					群組傳送名單：港務局長官群組、高雄港港務局
+				</p>
+				<div class="prview-btn">
+					<div class="btn btn-cancel" id="cancelNotice3">取消發送</div>
+					<div class="btn btn-submit">確定發送</div>
+				</div>
+			</div>
+		</div>
+		<div class="notice-box" id="noticeBox" style="display: none;">
+			<div class="main">
+				<h1>
+					異常事件即時通訊軟體發布
+					<div class="btn-cancel-notice" id="cancelNotice">
+						<img src="img/icon_close.svg" alt="">
+						取消
+					</div>
+				</h1>
+				<div class="inline-input-box">
+					<label for="">發布時間：</label>
+					<div class="inline-box">
+						<span>2021/07/15 12:55</span>
+					</div>
+				</div>
+				<div class="inline-input-box">
+					<label for="">發布人員：</label>
+					<div class="inline-box">
+						單位：<span>交通部航港局</span> /
+						姓名：<span>王大陸</span>
+					</div>
+				</div>
+				<div class="inline-input-box">
+					<label for="">訊息主旨：</label>
+					<input type="text" value="" placeholder="請輸入訊息主旨" class="input-sty full-layout-input">
+				</div>
+				<div class="inline-input-box">
+					<label for="">異常船舶：</label>
+					<input type="text" value="" placeholder="船舶名稱" class="input-sty" style="margin: 0 5px 0 0;">
+					<label for="">MMSI：</label>
+					<input type="text" value="" placeholder="MMSI" class="input-sty w100" style="margin: 0 5px 0 0;">
+					<label for="">船舶號數：</label>
+					<input type="text" value="" placeholder="船舶號數" class="input-sty w100">
+				</div>
+				<div class="inline-input-box">
+					<label for="">發生地點：</label>
+					<input type="text" value="高雄港口,錨地附近" placeholder="請輸入地點" class="input-sty full-layout-input">
+				</div>
+				<div class="inline-input-box">
+					<label for="">事件說明：</label>
+					<textarea name="" id="" placeholder="請描述事件" class="input-sty "></textarea>
+				</div>
+				<div class="sel-notice-option">
+					<label for="">選擇通報資訊：</label>
+					<div class="check-list">
+						<label for="info1">
+							<input type="checkbox" name="notice" id="info1" checked>
+							<div class="check-box"></div>
+							<span>統一編號</span>
+						</label>
+						<label for="info2">
+							<input type="checkbox" name="notice" id="info2" checked>
+							<div class="check-box"></div>
+							<span>公司中文名稱</span>
+						</label>
+						<label for="info3">
+							<input type="checkbox" name="notice" id="info3">
+							<div class="check-box"></div>
+							<span>公司英文名稱</span>
+						</label>
+						<label for="info4">
+							<input type="checkbox" name="notice" id="info4">
+							<div class="check-box"></div>
+							<span>公司地址</span>
+						</label>
+						<label for="info5">
+							<input type="checkbox" name="notice" id="info5">
+							<div class="check-box"></div>
+							<span>港灣編號</span>
+						</label>
+						<label for="info6">
+							<input type="checkbox" name="notice" id="info6">
+							<div class="check-box"></div>
+							<span>簽證編號</span>
+						</label>
+						<label for="info7">
+							<input type="checkbox" name="notice" id="info7">
+							<div class="check-box"></div>
+							<span>預定出港日期</span>
+						</label>
+						<label for="info8">
+							<input type="checkbox" name="notice" id="info8">
+							<div class="check-box"></div>
+							<span>預定進港時間</span>
+						</label>
+						<label for="info9">
+							<input type="checkbox" name="notice" id="info9" checked>
+							<div class="check-box"></div>
+							<span>航線名稱</span>
+						</label>
+						<label for="info10">
+							<input type="checkbox" name="notice" id="info10">
+							<div class="check-box"></div>
+							<span>港代名稱</span>
+						</label>
+						<label for="info11">
+							<input type="checkbox" name="notice" id="info11">
+							<div class="check-box"></div>
+							<span>總代理公司名稱</span>
+						</label>
+						<label for="info12">
+							<input type="checkbox" name="notice" id="info12">
+							<div class="check-box"></div>
+							<span>船東</span>
+						</label>
+						<label for="info13">
+							<input type="checkbox" name="notice" id="info13" checked>
+							<div class="check-box"></div>
+							<span>運送人</span>
+						</label>
+					</div>
+					<div class="notice-group">
+						<div class="inline-input-box">
+							<label for="">統一編號：</label>
+							<input type="text" value="42735145" class="input-sty">
+						</div>
+						<div class="inline-input-box">
+							<label for="">公司中文名稱：</label>
+							<input type="text" value="中鋼運通股份有限公司" class="input-sty">
+						</div>
+						<div class="inline-input-box">
+							<label for="">航線名稱：</label>
+							<input type="text" value="Z901．兩岸直航航線" class="input-sty">
+						</div>
+						<div class="inline-input-box">
+							<label for="">運送人：</label>
+							<input type="text" value="中鋼運通股份有限公司" class="input-sty">
+						</div>
+					</div>
+					<div class="prview-btn">
+						<div class="btn btn-submit">組合結果預覽</div>
+					</div>
+					<div class="inline-input-box">
+						<label for="">通報訊息預覽(不可修改)：</label>
+						<div class="prview-message">
+							發布時間： 2021/07/15 12:55<br />
+							發布人員： 單位：交通部航港局 / 姓名：王大陸<br />
+							訊息主旨：航行異常<br />
+							異常船舶：恆星客船<br />
+							MMSI：416123456<br />
+							船舶號數：023456<br />
+							發生地點：高雄港口,錨地附近<br />
+							事件說明：偏離固定航行路線且航向飄移不定<br />
+							船舶資訊：<br />
+							統一編號：42735145<br />
+							公司中文名稱：中鋼運通股份有限公司<br />
+							航線名稱：Z901．兩岸直航航線<br />
+							運送人：中鋼運通股份有限公司
+						</div>
+					</div>
+				</div>
+				<div class="post-group">
+					<label for="">發送群組：</label>
+					<div class="check-list">
+						<label for="group1">
+							<input type="checkbox" name="notice" id="group1" checked>
+							<div class="check-box"></div>
+							<span>航港局長官群組</span>
+						</label>
+						<label for="group2">
+							<input type="checkbox" name="notice" id="group2" checked>
+							<div class="check-box"></div>
+							<span>高雄港港務局</span>
+						</label>
+						<label for="group3">
+							<input type="checkbox" name="notice" id="group3">
+							<div class="check-box"></div>
+							<span>航港監控人員</span>
+						</label>
+						<label for="group4">
+							<input type="checkbox" name="notice" id="group4">
+							<div class="check-box"></div>
+							<span>南部監控群</span>
+						</label>
+					</div>
+					<div class="prview-btn">
+						<div class="btn btn-cancel" id="cancelNotice2">取消發送</div>
+						<div class="btn btn-submit" id="noticeSubmit">發送通知</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+		<!-- alarms events -->
+		<div class="tit alarms-box" id="pageAlarmsEvents" style="display: none;">
+			<h2>
+				Alarms Events
+				<div class="btn-unfold">
+					<img src="img/icon_full_big.svg" alt="">
+				</div>
+				<div class="btn-close" id="closeAlarmsEvents">
+					<img src="img/icon_close.svg" alt="">
+				</div>
+			</h2>
+			<div class="inline-cont">
+				<div class="input-box">
+					<label for="showStatus">Show</label>
+					<select name="showStatus" id="showStatus" class="select-sty">
+						<option value="">Active</option>
+					</select>
+				</div>
+				<div class="input-box">
+					<label for="selTime">Time Span</label>
+					<select name="selTime" id="selTime" class="select-sty">
+						<option value="">3 Hours</option>
+					</select>
+				</div>
+				<div class="inline-other-set">
+					<label for="refresh" class="sub-checkbox">
+						<input type="checkbox" name="refresh" id="refresh">
+						<div class="check-boxs">
+							<img src="img/icon_check.svg" alt="">
+						</div>
+						<span>Refresh every</span>
+					</label>
+					<input type="text" class="input-sty">
+					<span>Sec</span>
+					<div class="btn btn-green">Set</div>
+				</div>
+				<div class="inline-other-set">
+					<label for="centerzoomto" class="sub-checkbox">
+						<input type="checkbox" name="centerzoomto" id="centerzoomto">
+						<div class="check-boxs">
+							<img src="img/icon_check.svg" alt="">
+						</div>
+						<span>Center/zoom to</span>
+					</label>
+					<input type="text" class="input-sty">
+					<div class="btn btn-green">Set</div>
+				</div>
+				<div class="btn btn-cancel">Close</div>
+				<div class="btn btn-submit">Apply</div>
+				<div class="list-group">
+					<div class="table-group">
+						<table class="table">
+							<tr>
+								<th>
+									<label for="all" class="sub-checkbox">
+										<input type="checkbox" name="all" id="all">
+										<div class="check-boxs">
+											<img src="img/icon_check.svg" alt="">
+										</div>
+									</label>
+									Hide
+								</th>
+								<th>Time</th>
+								<th>Priority</th>
+								<th>Condition</th>
+								<th>Msg</th>
+								<th>Zone</th>
+								<th>MMSI</th>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Call Sign</th>
+								<th>Latitude</th>
+								<th>Longitude</th>
+								<th>Info</th>
+							</tr>
+							<tr>
+								<td>
+									<label for="list1" class="sub-checkbox">
+										<input type="checkbox" name="list1" id="list1">
+										<div class="check-boxs">
+											<img src="img/icon_check.svg" alt="">
+										</div>
+									</label>
+								</td>
+								<td>2020/9/18 04:59</td>
+								<td>Middle</td>
+								<td>In Zone</td>
+								<td class="mesg-green">準備進港了!</td>
+								<td>警戒區6</td>
+								<td>667001575</td>
+								<td>SUNWO</td>
+								<td>Cargo ship</td>
+								<td>9LU2697</td>
+								<td>22°34.513'N</td>
+								<td>120°15.355'E</td>
+								<td>SOG: 0.0 knt, COG: 250.0°, Dest.: KHH, ETA: 2020-09-24 10:00</td>
+							</tr>
+							<tr>
+								<td>
+									<label for="list2" class="sub-checkbox">
+										<input type="checkbox" name="list2" id="list2">
+										<div class="check-boxs">
+											<img src="img/icon_check.svg" alt="">
+										</div>
+									</label>
+								</td>
+								<td>2020/9/18 04:59</td>
+								<td>Middle</td>
+								<td>In Zone</td>
+								<td class="mesg-green">準備進港了!</td>
+								<td>警戒區6</td>
+								<td>667001575</td>
+								<td>SUNWO</td>
+								<td>Cargo ship</td>
+								<td>9LU2697</td>
+								<td>22°34.513'N</td>
+								<td>120°15.355'E</td>
+								<td>SOG: 0.0 knt, COG: 250.0°, Dest.: KHH, ETA: 2020-09-24 10:00</td>
+							</tr>
+							<tr>
+								<td>
+									<label for="list3" class="sub-checkbox">
+										<input type="checkbox" name="list3" id="list3">
+										<div class="check-boxs">
+											<img src="img/icon_check.svg" alt="">
+										</div>
+									</label>
+								</td>
+								<td>2020/9/18 04:59</td>
+								<td>Middle</td>
+								<td>In Zone</td>
+								<td class="mesg-green">準備進港了!</td>
+								<td>警戒區6</td>
+								<td>667001575</td>
+								<td>SUNWO</td>
+								<td>Cargo ship</td>
+								<td>9LU2697</td>
+								<td>22°34.513'N</td>
+								<td>120°15.355'E</td>
+								<td>SOG: 0.0 knt, COG: 250.0°, Dest.: KHH, ETA: 2020-09-24 10:00</td>
+							</tr>
+							<tr>
+								<td>
+									<label for="list4" class="sub-checkbox">
+										<input type="checkbox" name="list4" id="list4">
+										<div class="check-boxs">
+											<img src="img/icon_check.svg" alt="">
+										</div>
+									</label>
+								</td>
+								<td>2020/9/18 04:59</td>
+								<td>Middle</td>
+								<td>In Zone</td>
+								<td class="mesg-green">準備進港了!</td>
+								<td>警戒區6</td>
+								<td>667001575</td>
+								<td>SUNWO</td>
+								<td>Cargo ship</td>
+								<td>9LU2697</td>
+								<td>22°34.513'N</td>
+								<td>120°15.355'E</td>
+								<td>SOG: 0.0 knt, COG: 250.0°, Dest.: KHH, ETA: 2020-09-24 10:00</td>
+							</tr>
+							<tr>
+								<td>
+									<label for="list5" class="sub-checkbox">
+										<input type="checkbox" name="list5" id="list5">
+										<div class="check-boxs">
+											<img src="img/icon_check.svg" alt="">
+										</div>
+									</label>
+								</td>
+								<td>2020/9/18 04:59</td>
+								<td>Middle</td>
+								<td>In Zone</td>
+								<td class="mesg-green">準備進港了!</td>
+								<td>警戒區6</td>
+								<td>667001575</td>
+								<td>SUNWO</td>
+								<td>Cargo ship</td>
+								<td>9LU2697</td>
+								<td>22°34.513'N</td>
+								<td>120°15.355'E</td>
+								<td>SOG: 0.0 knt, COG: 250.0°, Dest.: KHH, ETA: 2020-09-24 10:00</td>
+							</tr>
+							<tr>
+								<td>
+									<label for="list6" class="sub-checkbox">
+										<input type="checkbox" name="list6" id="list6">
+										<div class="check-boxs">
+											<img src="img/icon_check.svg" alt="">
+										</div>
+									</label>
+								</td>
+								<td>2020/9/18 04:59</td>
+								<td>Middle</td>
+								<td>In Zone</td>
+								<td class="mesg-green">準備進港了!</td>
+								<td>警戒區6</td>
+								<td>667001575</td>
+								<td>SUNWO</td>
+								<td>Cargo ship</td>
+								<td>9LU2697</td>
+								<td>22°34.513'N</td>
+								<td>120°15.355'E</td>
+								<td>SOG: 0.0 knt, COG: 250.0°, Dest.: KHH, ETA: 2020-09-24 10:00</td>
+							</tr>
+							<tr>
+								<td>
+									<label for="list7" class="sub-checkbox">
+										<input type="checkbox" name="list7" id="list7">
+										<div class="check-boxs">
+											<img src="img/icon_check.svg" alt="">
+										</div>
+									</label>
+								</td>
+								<td>2020/9/18 04:59</td>
+								<td>Middle</td>
+								<td>In Zone</td>
+								<td class="mesg-green">準備進港了!</td>
+								<td>警戒區6</td>
+								<td>667001575</td>
+								<td>SUNWO</td>
+								<td>Cargo ship</td>
+								<td>9LU2697</td>
+								<td>22°34.513'N</td>
+								<td>120°15.355'E</td>
+								<td>SOG: 0.0 knt, COG: 250.0°, Dest.: KHH, ETA: 2020-09-24 10:00</td>
+							</tr>
+							<tr>
+								<td>
+									<label for="list8" class="sub-checkbox">
+										<input type="checkbox" name="list8" id="list8">
+										<div class="check-boxs">
+											<img src="img/icon_check.svg" alt="">
+										</div>
+									</label>
+								</td>
+								<td>2020/9/18 04:59</td>
+								<td>Middle</td>
+								<td>In Zone</td>
+								<td class="mesg-green">準備進港了!</td>
+								<td>警戒區6</td>
+								<td>667001575</td>
+								<td>SUNWO</td>
+								<td>Cargo ship</td>
+								<td>9LU2697</td>
+								<td>22°34.513'N</td>
+								<td>120°15.355'E</td>
+								<td>SOG: 0.0 knt, COG: 250.0°, Dest.: KHH, ETA: 2020-09-24 10:00</td>
+							</tr>
+							<tr>
+								<td>
+									<label for="list9" class="sub-checkbox">
+										<input type="checkbox" name="list9" id="list9">
+										<div class="check-boxs">
+											<img src="img/icon_check.svg" alt="">
+										</div>
+									</label>
+								</td>
+								<td>2020/9/18 04:59</td>
+								<td>Middle</td>
+								<td>In Zone</td>
+								<td class="mesg-green">準備進港了!</td>
+								<td>警戒區6</td>
+								<td>667001575</td>
+								<td>SUNWO</td>
+								<td>Cargo ship</td>
+								<td>9LU2697</td>
+								<td>22°34.513'N</td>
+								<td>120°15.355'E</td>
+								<td>SOG: 0.0 knt, COG: 250.0°, Dest.: KHH, ETA: 2020-09-24 10:00</td>
+							</tr>
+							<tr>
+								<td>
+									<label for="list10" class="sub-checkbox">
+										<input type="checkbox" name="list10" id="list10">
+										<div class="check-boxs">
+											<img src="img/icon_check.svg" alt="">
+										</div>
+									</label>
+								</td>
+								<td>2020/9/18 04:59</td>
+								<td>Middle</td>
+								<td>In Zone</td>
+								<td class="mesg-green">準備進港了!</td>
+								<td>警戒區6</td>
+								<td>667001575</td>
+								<td>SUNWO</td>
+								<td>Cargo ship</td>
+								<td>9LU2697</td>
+								<td>22°34.513'N</td>
+								<td>120°15.355'E</td>
+								<td>SOG: 0.0 knt, COG: 250.0°, Dest.: KHH, ETA: 2020-09-24 10:00</td>
+							</tr>
+							<tr>
+								<td>
+									<label for="list11" class="sub-checkbox">
+										<input type="checkbox" name="list11" id="list11">
+										<div class="check-boxs">
+											<img src="img/icon_check.svg" alt="">
+										</div>
+									</label>
+								</td>
+								<td>2020/9/18 04:59</td>
+								<td>Middle</td>
+								<td>In Zone</td>
+								<td class="mesg-green">準備進港了!</td>
+								<td>警戒區6</td>
+								<td>667001575</td>
+								<td>SUNWO</td>
+								<td>Cargo ship</td>
+								<td>9LU2697</td>
+								<td>22°34.513'N</td>
+								<td>120°15.355'E</td>
+								<td>SOG: 0.0 knt, COG: 250.0°, Dest.: KHH, ETA: 2020-09-24 10:00</td>
+							</tr>
+							<tr>
+								<td>
+									<label for="list12" class="sub-checkbox">
+										<input type="checkbox" name="list12" id="list12">
+										<div class="check-boxs">
+											<img src="img/icon_check.svg" alt="">
+										</div>
+									</label>
+								</td>
+								<td>2020/9/18 04:59</td>
+								<td>Middle</td>
+								<td>In Zone</td>
+								<td class="mesg-green">準備進港了!</td>
+								<td>警戒區6</td>
+								<td>667001575</td>
+								<td>SUNWO</td>
+								<td>Cargo ship</td>
+								<td>9LU2697</td>
+								<td>22°34.513'N</td>
+								<td>120°15.355'E</td>
+								<td>SOG: 0.0 knt, COG: 250.0°, Dest.: KHH, ETA: 2020-09-24 10:00</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="maps-box">
+			<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+				src="https://www.openstreetmap.org/export/embed.html?bbox=120.22789679467678%2C22.524345575802077%2C120.38402281701566%2C22.615332737518795&amp;layer=mapnik"
+				style="border: 1px solid black"></iframe>
+			<br />
+			<small>
+				<a href="https://www.openstreetmap.org/#map=14/22.5698/120.3060">查看更大的地圖</a>
+			</small>
+		</div>
+
+		<div class="popup-ship-info ol-popup" style="display:;">
+			<div class="popup-arrow2"></div>
+			<div id="popup-content">
+				<div class="ov-pop-box-tit">
+					<img src="flags/24/000.png">
+					<h2>SUNLIGHT EXPRESS</h2>
+					<a class="ship-MTNet" id="popBtnShipDetails" onclick="pageShipDetial()">
+						<img src="img/icon_info.svg" alt="Details" title="Details">
+					</a>
+					<div class="close-popup">
+						<img src="img/icon_close.svg" alt="">
+					</div>
+				</div>
+				<div class="popup-content-detial">
+					<h3>MMSI/IMO:</h3>
+					<p>351001000/9459266</p>
+				</div>
+				<div class="popup-content-detial">
+					<h3>Call Sign:</h3>
+					<p>3FMK7</p>
+				</div>
+				<div class="popup-content-detial">
+					<h3>國家:</h3>
+					<p>Panama</p>
+				</div>
+				<div class="popup-content-detial">
+					<h3>緯度:</h3>
+					<p>24°13.422'N(24.223703)</p>
+				</div>
+				<div class="popup-content-detial">
+					<h3>經度:</h3>
+					<p>123°15.492'E(123.258163)</p>
+				</div>
+				<div class="popup-content-detial">
+					<h3>型式:</h3>
+					<p>油輪</p>
+				</div>
+				<div class="popup-content-detial">
+					<h3>航行狀態:</h3>
+					<p>動力航行中</p>
+				</div>
+				<div class="popup-content-detial">
+					<h3>速度/航向:</h3>
+					<p>8.1knt/23.1°</p>
+					</div>
+					<div class="popup-content-detial">
+					<h3>長度/寬度/吃水:</h3>
+					<p>182m/32m/7.8m</p>
+				</div>
+				<div class="popup-content-detial">
+					<h3>目的地:</h3>
+					<p>KR YOS</p>
+				</div>
+				<div class="popup-content-detial">
+					<h3>ETA:</h3>
+					<p>2021-12-28 09:00</p>
+				</div>
+				<div class="popup-content-detial">
+					<h3>UTC:</h3>
+					<p>2021-12-26 16:43:20</p>
+				</div>
+				<div class="popup-content-detial">
+					<h3>本地:</h3>
+					<p>2021-12-27 00:43:20</p>
+				</div>
+				<div class="popup-content-detial">
+					<h3>已收到:</h3>
+					<p>2 分鐘前</p>
+				</div>
+				<div class="popup-content-detial">
+					<h3>Unit Name:</h3>
+					<p>MPB_AIS</p>
+				</div>
+
+		</div>
+
+
+
+	</div>
+	<script src="js/common.js"></script>
+	<script src="js/transformDMS.js"></script>
+</body>
+
+</html>
