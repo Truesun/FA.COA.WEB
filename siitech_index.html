@@ -6,6 +6,7 @@
 	<!-- <meta name="keywords" content="keywords,keywords"> -->
 	<meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=no">
 	<meta name="description" content="漁業署船位資訊系統 Siitech System">
+	
 	<link rel="shortcut icon" href="img/favicon.png"> <!-- 我的最愛圖示 -->
 	<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery.validate.js"></script><!-- 表單驗證 -->
@@ -22,6 +23,21 @@
 	<link rel="stylesheet" href="css/datepicker.min.css">
 	<link rel="stylesheet" href="css/all.min.css">
 	<link rel="stylesheet" href="css/siitech_sty.css">
+
+	<!-- openlayer Css -->
+	<link rel="stylesheet" href="css/map/ol.css">
+	<!-- 地圖樣式 -->
+	<link rel="stylesheet" href="css/map/map.css">
+
+  <!-- 重要!!ㄒ需加入以下引用IE才能顯示地圖 -->
+  <!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer -->
+  <script src="https://unpkg.com/elm-pep"></script>
+  <!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x -->
+  <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"></script>
+
+	<!-- openlayer Js -->
+	<script src="js/map/ol.js"></script>
 	<!--[if IE]>
 		<link href="/css/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
 		<link href="/css/font-awesome-ie7.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -997,287 +1013,287 @@
 			<!-- MTNet -->
 			<div class="inline-cont inline-cont-h" id="mtnetBox" style="display:;">
 				<div class="info-group" id="shipInfoPoint">
-					<h3>基本資料</h3>
+					<!-- <h3>基本資料</h3>
 					<div class="txt-group">
 						<h4>船舶號數船舶號數</h4>
 						<p>
-							<span>013647</span>
+							<span name="ship-basic" id="ship-basic1">013647</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>中文船名</h4>
 						<p>
-							<span>大益</span>
+							<span name="ship-basic" id="ship-basic2">大益</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>英文船名</h4>
 						<p>
-							<span>TA YIH</span>
+							<span name="ship-basic" id="ship-basic3">TA YIH</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>所有人名稱</h4>
 						<p>
-							<span>大吉航運股份有限公司</span>
+							<span name="ship-basic" id="ship-basic4">大吉航運股份有限公司</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>所有人英文名</h4>
 						<p>
-							<span></span>
+							<span name="ship-basic" id="ship-basic5"></span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>船舶營運人</h4>
 						<p>
-							<span></span>
+							<span name="ship-basic" id="ship-basic6"></span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>船籍港</h4>
 						<p>
-							<span>(KH)高雄港</span>
+							<span name="ship-basic" id="ship-basic7">(KH)高雄港</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>船舶種類</h4>
 						<p>
-							<span>B41 (B41雜貨船)</span>
+							<span name="ship-basic" id="ship-basic8">B41 (B41雜貨船)</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>船舶等級</h4>
 						<p>
-							<span>(09)航行外海航線之非客船</span>
+							<span name="ship-basic" id="ship-basic9">(09)航行外海航線之非客船</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>試航水域</h4>
 						<p>
-							<span>(08)外海</span>
+							<span name="ship-basic" id="ship-basic10">(08)外海</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>電台呼號</h4>
 						<p>
-							<span>BR3148</span>
+							<span name="ship-basic" id="ship-basic11">BR3148</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>水上行動業務識別</h4>
 						<p>
-							<span>416000025</span>
+							<span name="ship-basic" id="ship-basic12">416000025</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>船員定額</h4>
 						<p>
-							<span>13</span>
+							<span name="ship-basic" id="ship-basic13">13</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>乘客定額</h4>
 						<p>
-							<span>0</span>
+							<span name="ship-basic" id="ship-basic14">0</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>特種人員定額</h4>
 						<p>
-							<span></span>
+							<span name="ship-basic" id="ship-basic15"></span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>航線</h4>
 						<p>
-							<span>K6 K6</span>
+							<span name="ship-basic" id="ship-basic16">K6 K6</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>下水日期</h4>
 						<p>
-							<span>078/01/01</span>
+							<span name="ship-basic" id="ship-basic17">078/01/01</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>CR編號</h4>
 						<p>
-							<span></span>
+							<span name="ship-basic" id="ship-basic18"></span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>CT編號</h4>
 						<p>
-							<span>CT</span>
+							<span name="ship-basic" id="ship-basic19">CT</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>IMO編號</h4>
 						<p>
-							<span></span>
+							<span name="ship-basic" id="ship-basic20"></span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>所屬漁會</h4>
 						<p>
-							<span></span>
+							<span name="ship-basic" id="ship-basic21"></span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>停泊地</h4>
 						<p>
-							<span></span>
+							<span name="ship-basic" id="ship-basic22"></span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>最近特檢日期</h4>
 						<p>
-							<span>106/05/03</span>
+							<span name="ship-basic" id="ship-basic23">106/05/03</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>漁業執照字號</h4>
 						<p>
-							<span></span>
+							<span name="ship-basic" id="ship-basic24"></span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>字第 號</h4>
 						<p>
-							<span></span>
+							<span name="ship-basic" id="ship-basic25"></span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>漁業執照有效日</h4>
 						<p>
-							<span></span>
+							<span name="ship-basic" id="ship-basic26"></span>
 						</p>
-					</div>
+					</div> -->
 				</div>
 
 				<div class="info-group" id="shipTravelerPoint">
-					<h3>船體資料</h3>
+					<!-- <h3>船體資料</h3>
 					<div class="txt-group">
 						<h4>HullNo</h4>
 						<p>
-							<span></span>
+							<span name="ship-basic" id="ship-detail1"></span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>建造廠名(中)</h4>
 						<p>
-							<span>其他</span>
+							<span name="ship-basic" id="ship-detail2">其他</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>建造廠名(英)</h4>
 						<p>
-							<span></span>
+							<span name="ship-basic" id="ship-detail3"></span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>建造地點(中)</h4>
 						<p>
-							<span>日本</span>
+							<span name="ship-basic" id="ship-detail4">日本</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>建造地點(英)</h4>
 						<p>
-							<span></span>
+							<span name="ship-basic" id="ship-detail5"></span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>建造廠名補充說</h4>
 						<p>
-							<span>藤新造船會社</span>
+							<span name="ship-basic" id="ship-detail6">藤新造船會社</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>建造完成年月</h4>
 						<p>
-							<span>07801</span> (YYYMM)
+							<span name="ship-basic" id="ship-detail7">07801</span> (YYYMM)
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>新舊船別</h4>
 						<p>
-							<input type="radio" name="shipNew"> 新船
-							<input type="radio" name="shipNew"> 現成船
+							<input type="radio" name="shipNew" id="ship-detail8"> 新船
+							<input type="radio" name="shipNew" id="ship-detail9"> 現成船
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>船型</h4>
 						<p>
-							<span>(B+)乙型修加</span>
+							<span name="ship-basic" id="ship-detail10">(B+)乙型修加</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>總噸位</h4>
 						<p>
-							<span>982.00</span>
+							<span name="ship-basic" id="ship-detail11">982.00</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>淨噸位</h4>
 						<p>
-							<span>294.00</span>
+							<span name="ship-basic" id="ship-detail12">294.00</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>載重噸位</h4>
 						<p>
-							<span>1,059.000</span>
+							<span name="ship-basic" id="ship-detail13">1,059.000</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>排水量</h4>
 						<p>
-							<span>1,842.848</span>
+							<span name="ship-basic" id="ship-detail14">1,842.848</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>總長度</h4>
 						<p>
-							<span>59.40</span> M
+							<span name="ship-basic" id="ship-detail15">59.40</span> M
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>船長</h4>
 						<p>
-							<span>55.25</span> M
+							<span name="ship-basic" id="ship-detail16">55.25</span> M
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>法長</h4>
 						<p>
-							<span>55.00</span> M
+							<span name="ship-basic" id="ship-detail17">55.00</span> M
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>貨櫃量(TEU)</h4>
 						<p>
-							<span>0</span>
+							<span name="ship-basic" id="ship-detail18">0</span>
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>最大速率</h4>
 						<p>
-							<span>12.07</span> 節
+							<span name="ship-basic" id="ship-detail19">12.07</span> 節
 						</p>
 					</div>
 					<div class="txt-group">
 						<h4>航行速率</h4>
 						<p>
-							<span>11.00</span> 節
+							<span name="ship-basic" id="ship-detail20">11.00</span> 節
 						</p>
-					</div>
+					</div> -->
 				</div>
 
 				<div class="info-group" id="shipInOutPoint">
-					<h3>進出港資訊</h3>
-					<ul class="list">
+					<!-- <h3>進出港資訊</h3>
+					<ul class="list" name="ship-basic" id="ship-in-out-port-info">
 						<li class="title">
 							<div class="group-box-100">
 								<div class="box-8 txt-c">序號</div>
@@ -1328,7 +1344,7 @@
 								<div class="box-15">入港</div>
 							</div>
 						</li>
-					</ul>
+					</ul> -->
 				</div>
 
 			</div>
@@ -1949,13 +1965,14 @@
 			</div>
 		</div>
 		<div class="maps-box">
-			<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+			<!-- <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
 				src="https://www.openstreetmap.org/export/embed.html?bbox=120.22789679467678%2C22.524345575802077%2C120.38402281701566%2C22.615332737518795&amp;layer=mapnik"
 				style="border: 1px solid black"></iframe>
 			<br />
 			<small>
 				<a href="https://www.openstreetmap.org/#map=14/22.5698/120.3060">查看更大的地圖</a>
-			</small>
+			</small> -->
+			<div id="mapView"></div>
 		</div>
 
 		<div class="popup-ship-info ol-popup" style="display:;">
@@ -2039,6 +2056,11 @@
 	</div>
 	<script src="js/common.js"></script>
 	<script src="js/transformDMS.js"></script>
+
+	<!--地圖API JS-->
+	<script src="js/map/mapMain.js"></script>
+	<!--對應功能的 JS-->
+	<script src="js/map/mapData.js"></script>
 </body>
 
 </html>
