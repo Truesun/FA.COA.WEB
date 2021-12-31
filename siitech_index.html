@@ -38,6 +38,7 @@
 
 	<!-- openlayer Js -->
 	<script src="js/map/ol.js"></script>
+	<script src="js/map/axios.min.js"></script>
 	<!--[if IE]>
 		<link href="/css/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
 		<link href="/css/font-awesome-ie7.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -1981,7 +1982,7 @@
 				<div class="ov-pop-box-tit">
 					<img src="flags/24/000.png">
 					<h2>SUNLIGHT EXPRESS</h2>
-					<a class="ship-MTNet" id="popBtnShipDetails" onclick="pageShipDetial()">
+					<a class="ship-MTNet" id="popBtnShipDetails" onclick="pageShipDetial();mapData.methods.features1.getShipBasicData(mapData.methods.features1.getShipDetailData(mapData.methods.features1.getShipInOutPointData()));">
 						<img src="img/icon_info.svg" alt="Details" title="Details">
 					</a>
 					<div class="close-popup">

@@ -12,6 +12,10 @@ var mapData = {
 
                 }
             },
+        },
+        Api:{
+            domainName : "http://desktop-cmkfk60/", // http://localhost:52579/
+            projectName:"FACOA/",
         }
     },
     methods:{ //三個功能各自使用的方法區塊
@@ -25,7 +29,7 @@ var mapData = {
             // document.getElementById('shipInfoPoint').textContent = "";   
             // document.getElementById('shipInfoPoint').innerHTML = "<h3>基本資料</h3>";       
             },   
-            getShipBasicData:function(){
+            getShipBasicData:function(func){
                 //API回傳 基本資料由此指定
                 // document.getElementById('ship-basic1').textContent = '船舶號數船舶號數'; //船舶號數船舶號數
                 // document.getElementById('ship-basic2').textContent = '中文船名'; //中文船名
@@ -80,9 +84,9 @@ var mapData = {
                 shipInfoPointHtml += "<div class=\"txt-group\"><h4>漁業執照字號</h4><p><span></span></p></div>";
                 shipInfoPointHtml += "<div class=\"txt-group\"><h4>字第 號</h4><p><span></span></p></div>";
                 shipInfoPointHtml += "<div class=\"txt-group\"><h4>漁業執照有效日</h4><p><span></span></p></div>";
-                document.getElementById('shipInfoPoint').innerHTML = shipInfoPointHtml;       
+                document.getElementById('shipInfoPoint').innerHTML = shipInfoPointHtml;                                  
             },  
-            getShipDetailData:function(){
+            getShipDetailData:function(func){
                  //API回傳 船體資料由此指定
                 //  document.getElementById('ship-detail1').textContent = 'HullNo'; //HullNo
                 //  document.getElementById('ship-detail2').textContent = '建造廠名(中)'; //建造廠名(中)
@@ -123,44 +127,66 @@ var mapData = {
                  shipTravelerPointHtml += "<div class=\"txt-group\"><h4>貨櫃量(TEU)</h4><p><span>0</span></p></div>";
                  shipTravelerPointHtml += "<div class=\"txt-group\"><h4>最大速率</h4><p><span>12.07</span>節</p></div>";
                  shipTravelerPointHtml += "<div class=\"txt-group\"><h4>航行速率</h4><p><span>11.00</span>節</p></div>";
-                 document.getElementById('shipTravelerPoint').innerHTML = shipTravelerPointHtml;
+                 document.getElementById('shipTravelerPoint').innerHTML = shipTravelerPointHtml;              
             },               
-            getShipInOutPointData : function(){ //賦予進出港資訊
+            getShipInOutPointData : function(){ //賦予進出港資訊          
 
-             var shipInOutPointHtml =  '<h3>進出港資訊</h3>';
-             shipInOutPointHtml += '<ul class="list">';
-            
-             shipInOutPointHtml += '<li class="title">';
-            shipInOutPointHtml += '<div class="group-box-100">';
-            shipInOutPointHtml += '<div class="box-8 txt-c">序號</div>';
-            shipInOutPointHtml += '<div class="box-25">漁船統一編號</div>';
-            shipInOutPointHtml += '<div class="box-15">發生日期</div>';
-            shipInOutPointHtml += '<div class="box-15">發生時間 </div>'
-            shipInOutPointHtml += '<div class="box-15">港口代碼</div>'
-            shipInOutPointHtml += '<div class="box-15">事件</div>';
-            shipInOutPointHtml += '</div>';
-            shipInOutPointHtml += '</li>';
+            var data = {CTNo : "CT4-2757",DateS:"2021-12-18",DateE:"2021-12-25"};  //API三個參數由此替換
+            axios.post(mapData.data.Api.domainName + mapData.data.Api.projectName + "api/FACOA/Post", {
+                "CTNo": data.CTNo, 
+                "DateS" : data.DateS,
+                "DateE" : data.DateE          
+            }).then(function (response) {
+                var results = response.data;
 
-            //查完的資料在這跑for loop
+                var shipInOutPointHtml =  '<h3>進出港資訊</h3>';
+                shipInOutPointHtml += '<ul class="list">';
+               
+               shipInOutPointHtml += '<li class="title">';
+               shipInOutPointHtml += '<div class="group-box-100">';
+               shipInOutPointHtml += '<div class="box-8 txt-c">序號</div>';
+               shipInOutPointHtml += '<div class="box-25">漁船統一編號</div>';
+               shipInOutPointHtml += '<div class="box-15">發生日期</div>';
+               shipInOutPointHtml += '<div class="box-15">發生時間 </div>'
+               shipInOutPointHtml += '<div class="box-15">港口代碼</div>'
+               shipInOutPointHtml += '<div class="box-15">事件</div>';
+               shipInOutPointHtml += '</div>';
+               shipInOutPointHtml += '</li>';
+
+                if(results.Status === 1){
+                    if(results.Data.length > 0){
+                        for(var i=0; i < results.Data.length; i++ ){
+                            //查完的資料在這跑for loop
             shipInOutPointHtml += '<li>';
             shipInOutPointHtml += '<div class="group-box-100">';
-            shipInOutPointHtml += '<div class="box-8 txt-c">1</div>';
-            shipInOutPointHtml += '<div class="box-25">CT RPT3785 </div>';
-            shipInOutPointHtml += '<div class="box-15">211105</div>';
-            shipInOutPointHtml += '<div class="box-15">20:32:44</div>'
-            shipInOutPointHtml += '<div class="box-15">43B2</div>'
-            shipInOutPointHtml += '<div class="box-15">出港</div>';
+            shipInOutPointHtml += "<div class=\"box-8 txt-c\">"+(i+1).toString()+"</div>";
+            shipInOutPointHtml += "<div class=\"box-25\">"+results.Data[i].CTNo +"</div>";
+            shipInOutPointHtml += "<div class=\"box-15\">"+results.Data[i].TimeStempDate +"</div>";
+            shipInOutPointHtml += "<div class=\"box-15\">"+results.Data[i].TimeStempTime +"</div>";
+            shipInOutPointHtml += "<div class=\"box-15\">"+results.Data[i].ZoneName+"</div>";
+            shipInOutPointHtml += "<div class=\"box-15\">"+results.Data[i].ConditionID1Str +"</div>";
             shipInOutPointHtml += '</div>';
             shipInOutPointHtml += '</li>';
-                
-            shipInOutPointHtml += '</ul>';
-              document.getElementById('shipInOutPoint').innerHTML = shipInOutPointHtml;       
+                        }
+                    }else{
+                        alert("無進出港資訊!!");
+                    }
+                    shipInOutPointHtml += '</ul>';
+                    document.getElementById('shipInOutPoint').innerHTML = shipInOutPointHtml;  
+                }else{
+                    alert("發生錯誤!!");
+                    console.log(results.ErrorMessage);   
+                }             
+            }).catch(function (error) {
+                console.log(error);                 
+            });
+                                         
             },
         },
     }
 };
 
 //mapData.methods.features1.clearShipDetailData();
-mapData.methods.features1.getShipBasicData();
-mapData.methods.features1.getShipDetailData();
-mapData.methods.features1.getShipInOutPointData();
+//mapData.methods.features1.getShipBasicData();
+//mapData.methods.features1.getShipDetailData();
+//mapData.methods.features1.getShipInOutPointData();
