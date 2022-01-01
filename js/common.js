@@ -212,7 +212,7 @@ $(function () {
             $("#radiusBox").show();
         } else {
             $("#radiusBox").hide();
-        }
+        }    
     });
 
     $("#btnGpsOpen").on("click", function () {
