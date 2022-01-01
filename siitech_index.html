@@ -245,7 +245,7 @@
 						<p>測量工具</p>
 					</label>
 				</div>
-				<div class="btn-side-box" id="btnRadiusOpen" title="測量半徑">
+				<div class="btn-side-box" id="btnRadiusOpen" title="測量半徑" onclick="mapMain.methods.toggleMapBuffer();">
 					<label for="meaRadius">
 						<img src="img/icon_radius.svg" alt="">
 						<input type="checkbox" name="meaRadius" id="meaRadius" value="Measuring radius">
@@ -521,10 +521,13 @@
 					<input type="submit" class="btn btn-submit" value="設定" />
 				</form>
 			</div>
+			<!-- <div class="input-ui-res">
+				查詢狀態： 輸入半徑值點擊地圖查詢
+			</div> -->
 			<div class="input-ui-res">
 				查詢結果： <i>12</i> 艘
 			</div>
-			<input type="submit" class="btn btn-cancel" value="清除" />
+			<input type="submit" class="btn btn-cancel" value="清除" onclick="mapMain.methods.clearMapBufferLayer();mapConfig.clickStatus = 'mapBuffer';" />
 		</div>
 
 		<!-- side menu 8 Ship Latitude and Longitude -->
@@ -921,11 +924,11 @@
 				<div class="btn-group">
 					<div></div>
 					<div class="right-bt">
-						<div class="btn btn-submit">查詢</div>
+						<div class="btn btn-submit" onclick="mapData.methods.features2.searchInOutPortData();">查詢</div>
 					</div>
 				</div>
 				<!-- 查詢結果 -->
-				<div class="in-out-result" style="display: ;">
+				<div class="in-out-result" id="in-out-result" style="display: ;">
 					<h3>查詢結果</h3>
 					<ul class="list">
 						<li class="title">
@@ -938,7 +941,7 @@
 								<div class="box-15">事件</div>
 							</div>
 						</li>
-						<li>
+						<!-- <li>
 							<div class="group-box-100">
 								<div class="box-8 txt-c">1</div>
 								<div class="box-25">CT RPT3785 </div>
@@ -984,7 +987,7 @@
 						<div class="right-bt">
 							<div class="btn btn-submit">匯出報表</div>
 						</div>
-					</div>
+					</div> -->
 				</div>
 
 				

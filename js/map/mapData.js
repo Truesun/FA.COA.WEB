@@ -1,34 +1,19 @@
 var mapData = {
     data:{  //三個功能各自使用的資料區塊
         features1:{
-            shipDetailData:{
-                basic:{ //基本資料      
-
-                },
-                ship:{  //船體資料
-
-                },
-                in_outPort:{  //進出港資訊
-
-                }
-            },
+            
+        },
+        features2:{
+            InOutPortResults :[],
         },
         Api:{
             domainName : "http://desktop-cmkfk60/", // http://localhost:52579/
             projectName:"FACOA/",
+            TestUrl:'http://localhost:52579/',
         }
     },
     methods:{ //三個功能各自使用的方法區塊
-        features1:{
-            clearShipDetailData:function(){
-            //    var spanNameArr = document.getElementsByName('ship-basic'); 
-
-            //    for(var i=0; i < spanNameArr.length; i++){
-            //     spanNameArr[i].textContent = '';
-            //    }          
-            // document.getElementById('shipInfoPoint').textContent = "";   
-            // document.getElementById('shipInfoPoint').innerHTML = "<h3>基本資料</h3>";       
-            },   
+        features1:{             
             getShipBasicData:function(func){
                 //API回傳 基本資料由此指定
                 // document.getElementById('ship-basic1').textContent = '船舶號數船舶號數'; //船舶號數船舶號數
@@ -135,7 +120,8 @@ var mapData = {
             axios.post(mapData.data.Api.domainName + mapData.data.Api.projectName + "api/FACOA/Post", {
                 "CTNo": data.CTNo, 
                 "DateS" : data.DateS,
-                "DateE" : data.DateE          
+                "DateE" : data.DateE,
+                "SearchType" : 1          
             }).then(function (response) {
                 var results = response.data;
 
@@ -183,8 +169,113 @@ var mapData = {
                                          
             },
         },
+        features2:{
+            searchInOutPortData:function(){
+                var searchConditionObj = {
+                     CTNo : document.getElementById('ctName').value
+                    ,ZoneName : document.getElementById('FishingPort').value
+                    ,DateS: document.getElementById('dateStart').value
+                    ,DateE: document.getElementById('dateEnd').value
+                    ,SearchType : 2
+                };
+                
+                //console.log(searchConditionObj);
+                axios.post(
+                    mapData.data.Api.domainName + mapData.data.Api.projectName + "api/FACOA/Post",
+                    //mapData.data.Api.TestUrl + "api/FACOA/Post",
+                {
+                    "CTNo": searchConditionObj.CTNo, 
+                    "DateS" : searchConditionObj.DateS,
+                    "DateE" : searchConditionObj.DateE,
+                    "SearchType" : searchConditionObj.SearchType       
+                }).then(function (response) {
+                    var results = response.data;
+                    var shipInOutPointHtml =  '<h3>進出港資訊</h3>';
+                    shipInOutPointHtml += '<ul class="list">';
+                   
+                   shipInOutPointHtml += '<li class="title">';
+                   shipInOutPointHtml += '<div class="group-box-100">';
+                   shipInOutPointHtml += '<div class="box-8 txt-c">序號</div>';
+                   shipInOutPointHtml += '<div class="box-25">漁船統一編號</div>';
+                   shipInOutPointHtml += '<div class="box-15">發生日期</div>';
+                   shipInOutPointHtml += '<div class="box-15">發生時間 </div>'
+                   shipInOutPointHtml += '<div class="box-15">港口代碼</div>'
+                   shipInOutPointHtml += '<div class="box-15">事件</div>';
+                   shipInOutPointHtml += '</div>';
+                   shipInOutPointHtml += '</li>';
+                          //console.log(results);
+                          //儲存搜尋結果
+                    mapData.data.features2.InOutPortResults = (results.Status === 1 && results.Data.length > 0) ? results.Data : [];
+                    if(results.Status === 1){
+                        if(results.Data.length > 0){
+                            for(var i=0; i < results.Data.length; i++ ){
+                                //查完的資料在這跑for loop
+                shipInOutPointHtml += '<li>';
+                shipInOutPointHtml += '<div class="group-box-100">';
+                shipInOutPointHtml += "<div class=\"box-8 txt-c\">"+(i+1).toString()+"</div>";
+                shipInOutPointHtml += "<div class=\"box-25\">"+results.Data[i].CTNo +"</div>";
+                shipInOutPointHtml += "<div class=\"box-15\">"+results.Data[i].TimeStempDate +"</div>";
+                shipInOutPointHtml += "<div class=\"box-15\">"+results.Data[i].TimeStempTime +"</div>";
+                shipInOutPointHtml += "<div class=\"box-15\">"+results.Data[i].ZoneName+"</div>";
+                shipInOutPointHtml += "<div class=\"box-15\">"+results.Data[i].ConditionID1Str +"</div>";
+                shipInOutPointHtml += '</div>';
+                shipInOutPointHtml += '</li>';
+                            }                          
+                        }else{
+                            alert("無進出港資訊!!");
+                        }
+                        shipInOutPointHtml += '</ul>';
+                        //有查到資料才有匯出報表按鈕
+                        if(results.Status === 1 && results.Data.length > 0){
+                            shipInOutPointHtml += "<div class=\"btn-group\">";
+                            shipInOutPointHtml += "<div></div>";
+                            shipInOutPointHtml += "<div class=\"right-bt\">";
+                            shipInOutPointHtml += "<div class=\"btn btn-submit\" onclick=\"mapData.methods.features2.exportCSV();\">匯出報表</div>";
+                            shipInOutPointHtml += "</div>";
+                            shipInOutPointHtml += "</div>";
+                        }
+                        document.getElementById('in-out-result').innerHTML = shipInOutPointHtml;  
+                    }else{
+                        alert("發生錯誤!!");
+                        console.log(results.ErrorMessage);   
+                    }             
+                }).catch(function (error) {
+                    console.log(error);                 
+                });
+            },
+            exportCSV:function(){
+                console.log(mapData.data.features2.InOutPortResults);
+                var csvHead = "序號,漁船統一編號,發生日期,發生時間,港口代碼,事件";
+                var csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+                csvContent += csvHead + "\r\n";
+                if(mapData.data.features2.InOutPortResults.length > 0 ){
+                    for(var k = 0; k < mapData.data.features2.InOutPortResults.length; k++){
+                        var tempStr = (k+1).toString() + ",";
+                        tempStr += mapData.data.features2.InOutPortResults[k].CTNo.toString() + ",";
+                        tempStr += mapData.data.features2.InOutPortResults[k].TimeStempDate.toString() + ",";
+                        tempStr += mapData.data.features2.InOutPortResults[k].TimeStempTime.toString() + ",";
+                        tempStr += mapData.data.features2.InOutPortResults[k].ZoneName.toString() + ",";
+                        tempStr += mapData.data.features2.InOutPortResults[k].ConditionID1Str.toString() + ",";
+                        csvContent += tempStr + "\r\n";
+                    }
+                    //console.log(csvContent);        
+                    var encodedUri = encodeURI(csvContent);
+                    var link = document.createElement("a");
+                    link.setAttribute("href", encodedUri);
+                    link.setAttribute("download", "進出港查詢結果.csv");
+                    document.body.appendChild(link); // Required for FF
+
+                    link.click(); // This will download the data file named "my_data.csv".
+                    link.remove();
+                }else{
+                    alert("無查詢結果");
+                }
+            },
+        }
     }
 };
+
+
 
 //mapData.methods.features1.clearShipDetailData();
 //mapData.methods.features1.getShipBasicData();
