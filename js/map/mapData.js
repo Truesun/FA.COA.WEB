@@ -117,7 +117,7 @@ var mapData = {
             getShipInOutPointData : function(){ //賦予進出港資訊          
 
             var data = {CTNo : "CT4-2757",DateS:"2021-12-18",DateE:"2021-12-25"};  //API三個參數由此替換
-            axios.post(mapData.data.Api.domainName + mapData.data.Api.projectName + "api/FACOA/Post", {
+            axios.post(mapData.data.Api.domainName + mapData.data.Api.projectName + "api/FACOA/GetEventsData", {
                 "CTNo": data.CTNo, 
                 "DateS" : data.DateS,
                 "DateE" : data.DateE,
@@ -181,8 +181,8 @@ var mapData = {
                 
                 //console.log(searchConditionObj);
                 axios.post(
-                    mapData.data.Api.domainName + mapData.data.Api.projectName + "api/FACOA/Post",
-                    //mapData.data.Api.TestUrl + "api/FACOA/Post",
+                    mapData.data.Api.domainName + mapData.data.Api.projectName + "api/FACOA/GetEventsData",
+                    //mapData.data.Api.TestUrl + "api/FACOA/GetEventsData",
                 {
                     "CTNo": searchConditionObj.CTNo, 
                     "DateS" : searchConditionObj.DateS,
@@ -244,7 +244,7 @@ var mapData = {
                 });
             },
             exportCSV:function(){
-                console.log(mapData.data.features2.InOutPortResults);
+                //console.log(mapData.data.features2.InOutPortResults);
                 var csvHead = "序號,漁船統一編號,發生日期,發生時間,港口代碼,事件";
                 var csvContent = "data:text/csv;charset=utf-8,\uFEFF";
                 csvContent += csvHead + "\r\n";
@@ -271,7 +271,53 @@ var mapData = {
                     alert("無查詢結果");
                 }
             },
-        }
+        },
+        features3:{
+            queryBufferShipCount:function(){
+                var data = {
+                    BufferRectangle:{
+                        MaxLonX:120.7110,
+                        MaxLatY:22.7100,
+                        MinLonX:120.4012,
+                        MinLatY:22.40071
+                    },
+                    BufferCenter :{
+                        CenterLon:120.4353583,
+                        CenterLat:22.47209833
+                    },
+                    radius: 1852,  //公尺
+                    FilterID : 1
+                };
+              
+            axios.post(
+                mapData.data.Api.domainName + mapData.data.Api.projectName + "api/FACOA/GetShipCountData",
+                //mapData.data.Api.TestUrl + "api/FACOA/GetShipCountData",
+             {
+                "BufferRectangle": data.BufferRectangle, 
+                "BufferCenter" : data.BufferCenter,
+                "radius" : data.radius,
+                "FilterID" : data.FilterID         
+            }).then(function (response) {
+                var results = response.data;
+                
+                console.log(results);
+                
+                // if(results.Status === 1){
+                //     if(results.Data.length > 0){
+                        
+                //     }else{
+                //         alert("無進出港資訊!!");
+                //     }               
+                // }else{
+                //     alert("發生錯誤!!");
+                //     console.log(results.ErrorMessage);   
+                // }             
+            }).catch(function (error) {
+                console.log(error);                 
+            });
+
+          }
+        },
     }
 };
 

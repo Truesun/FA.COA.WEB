@@ -519,7 +519,7 @@
 					<span>範圍</span>
 					<input type="text" class="input-sty" name="seaMile" id="seaMile" value="">
 					<span>海哩</span>
-					<input type="submit" class="btn btn-submit" value="設定" />
+					<input type="button" class="btn btn-submit" value="查詢" onclick="mapData.methods.features3.queryBufferShipCount();" />
 				</form>
 			</div>
 			<!-- <div class="input-ui-res">
@@ -528,7 +528,7 @@
 			<div class="input-ui-res">
 				查詢結果： <i>12</i> 艘
 			</div>
-			<input type="submit" class="btn btn-cancel" value="清除" onclick="mapMain.methods.clearMapBufferLayer();mapConfig.clickStatus = 'mapBuffer';" />
+			<input type="button" class="btn btn-cancel" value="清除" onclick="mapMain.methods.clearMapBufferLayer();mapConfig.clickStatus = 'mapBuffer';" />
 		</div>
 
 		<!-- side menu 8 Ship Latitude and Longitude -->
