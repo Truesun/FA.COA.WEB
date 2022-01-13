@@ -114,8 +114,8 @@ var mapData = {
             getShipInOutPointData : function(){ //賦予進出港資訊          
             var data = {CTNo : mapData.data.apiReturnData.ShipCTNumber};  //API三個參數由此替換
             axios.post(
-                //mapData.data.Api.domainName + mapData.data.Api.projectName + "api/FACOA/GetEventsData", 
-                mapData.data.Api.TestUrl + "api/FACOA/GetEventsData",
+                mapData.data.Api.domainName + mapData.data.Api.projectName + "api/FACOA/GetEventsData", 
+                //mapData.data.Api.TestUrl + "api/FACOA/GetEventsData",
             {
                 "CTNo": data.CTNo,           
                 "SearchType" : 1          
@@ -277,7 +277,7 @@ var mapData = {
                 return;
             }  
             //console.log(mapMain.queryShipOBj.radius);
-            if(mapMain.data.queryShipOBj.radius <=0){
+            if(mapMain.data.queryShipOBj.radius <= 0){
                 alert('請點擊欲查詢範圍');
                 return;
             } 
