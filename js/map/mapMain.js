@@ -17,19 +17,20 @@ var mapMain = {
     },
     methods: {
         initMap:function(){
-            mapConfig.entity.olMap = new ol.Map({
-                target: 'mapView',
-                layers: [
-                  new ol.layer.Tile({
-                    source: new ol.source.OSM()
-                  }),
-                  //layer
-                ],
-                view: new ol.View({
-                  center: mapMain.data.centerLongitudeLatitude,
-                  zoom: 12
-                })
-              });
+            mapConfig.entity.olMap = _map; //全域老外的map            
+              // new ol.Map({
+              //   target: 'mapView',
+              //   layers: [
+              //     new ol.layer.Tile({
+              //       source: new ol.source.OSM()
+              //     }),
+              //     //layer
+              //   ],
+              //   view: new ol.View({
+              //     center: mapMain.data.centerLongitudeLatitude,
+              //     zoom: 12
+              //   })
+              // });
               
               mapConfig.entity.olMap.on('click', function(evt){
                 if(mapConfig.clickStatus === "mapBuffer"){
@@ -52,7 +53,7 @@ var mapMain = {
         },
         toggleMapBuffer:function(){    
           //因common.js 註冊測量半徑btnRadiusOpen按鈕  不知為何  -->  此處  display = none = 開  ,'' = 關
-          mapConfig.isRadiusBoxOpen = document.getElementById('radiusBox').style.display === "none" ? true : false; 
+          mapConfig.isRadiusBoxOpen = document.getElementById('meaRadius').checked; 
           //console.log(mapConfig.isRadiusBoxOpen);
           mapConfig.clickStatus = mapConfig.isRadiusBoxOpen ? "mapBuffer" : "default"; 
          mapMain.methods.clearMapBufferLayer();
