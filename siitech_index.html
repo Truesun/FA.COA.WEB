@@ -43,7 +43,7 @@
 		<link href="/css/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
 		<link href="/css/font-awesome-ie7.css" media="screen, projection" rel="stylesheet" type="text/css" />
 	<![endif]-->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.5.0/proj4.js"></script>
+	<script src="js/map/proj4.js"></script>
 	<title>漁業署船位資訊系統 Siitech System</title>
 </head>
 
@@ -246,10 +246,10 @@
 						<p>測量工具</p>
 					</label>
 				</div>
-				<div class="btn-side-box" id="btnRadiusOpen" title="測量半徑" onclick="mapMain.methods.toggleMapBuffer();">
+				<div class="btn-side-box" id="btnRadiusOpen" title="測量半徑">
 					<label for="meaRadius">
 						<img src="img/icon_radius.svg" alt="">
-						<input type="checkbox" name="meaRadius" id="meaRadius" value="Measuring radius">
+						<input type="checkbox" name="meaRadius" id="meaRadius" value="Measuring radius" onchange="mapMain.methods.toggleMapBuffer();">
 						<div class="act-mask"></div>
 						<p>半徑測量</p>
 					</label>
