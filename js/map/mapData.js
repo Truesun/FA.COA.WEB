@@ -112,12 +112,12 @@ var mapData = {
                  mapData.methods.features1.getShipInOutPointData();          
             },               
             getShipInOutPointData : function(){ //賦予進出港資訊          
-            var data = {CTNo : mapData.data.apiReturnData.ShipCTNumber};  //API三個參數由此替換
+            var data = {CTNumber : mapData.data.apiReturnData.ShipCTNumber};  //API三個參數由此替換
             axios.post(
                 mapData.data.Api.domainName + mapData.data.Api.projectName + "api/FACOA/GetEventsData", 
                 //mapData.data.Api.TestUrl + "api/FACOA/GetEventsData",
             {
-                "CTNo": data.CTNo,           
+                "CTNumber": data.CTNumber,           
                 "SearchType" : 1          
             }).then(function (response) {
                 var results = response.data;
@@ -169,7 +169,7 @@ var mapData = {
         features2:{
             searchInOutPortData:function(){
                 var searchConditionObj = {
-                     CTNo : document.getElementById('ctName').value
+                    CTNumber : document.getElementById('ctName').value
                     ,ZoneName : document.getElementById('FishingPort').value
                     ,DateS: document.getElementById('dateStart').value
                     ,DateE: document.getElementById('dateEnd').value
@@ -181,7 +181,7 @@ var mapData = {
                     mapData.data.Api.domainName + mapData.data.Api.projectName + "api/FACOA/GetEventsData",
                     //mapData.data.Api.TestUrl + "api/FACOA/GetEventsData",
                 {
-                    "CTNo": searchConditionObj.CTNo, 
+                    "CTNumber": searchConditionObj.CTNumber, 
                     "DateS" : searchConditionObj.DateS,
                     "DateE" : searchConditionObj.DateE,
                     "SearchType" : searchConditionObj.SearchType       
@@ -210,7 +210,7 @@ var mapData = {
                 shipInOutPointHtml += '<li>';
                 shipInOutPointHtml += '<div class="group-box-100">';
                 shipInOutPointHtml += "<div class=\"box-8 txt-c\">"+(i+1).toString()+"</div>";
-                shipInOutPointHtml += "<div class=\"box-25\">"+results.Data[i].CTNo +"</div>";
+                shipInOutPointHtml += "<div class=\"box-25\">"+results.Data[i].CTNumber +"</div>";
                 shipInOutPointHtml += "<div class=\"box-15\">"+results.Data[i].TimeStempDate +"</div>";
                 shipInOutPointHtml += "<div class=\"box-15\">"+results.Data[i].TimeStempTime +"</div>";
                 shipInOutPointHtml += "<div class=\"box-15\">"+results.Data[i].ZoneName+"</div>";
@@ -248,7 +248,7 @@ var mapData = {
                 if(mapData.data.features2.InOutPortResults.length > 0 ){
                     for(var k = 0; k < mapData.data.features2.InOutPortResults.length; k++){
                         var tempStr = (k+1).toString() + ",";
-                        tempStr += mapData.data.features2.InOutPortResults[k].CTNo.toString() + ",";
+                        tempStr += mapData.data.features2.InOutPortResults[k].CTNumber.toString() + ",";
                         tempStr += mapData.data.features2.InOutPortResults[k].TimeStempDate.toString() + ",";
                         tempStr += mapData.data.features2.InOutPortResults[k].TimeStempTime.toString() + ",";
                         tempStr += mapData.data.features2.InOutPortResults[k].ZoneName.toString() + ",";
