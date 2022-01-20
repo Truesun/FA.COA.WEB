@@ -182,8 +182,8 @@ var mapData = {
                     //mapData.data.Api.TestUrl + "api/FACOA/GetEventsData",
                 {
                     "CTNumber": searchConditionObj.CTNumber, 
-                    "DateS" : searchConditionObj.DateS,
-                    "DateE" : searchConditionObj.DateE,
+                    "DateS" : searchConditionObj.DateS + " 00:00:00",
+                    "DateE" : searchConditionObj.DateE + " 23:59:59",
                     "SearchType" : searchConditionObj.SearchType       
                 }).then(function (response) {
                     var results = response.data;
