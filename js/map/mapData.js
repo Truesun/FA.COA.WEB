@@ -44,7 +44,7 @@ var mapData = {
                 //API回傳 基本資料由此指定         
                 var MMSI = "416003516"; //**測試資料 屆時替換
                 
-                var shipInfoPointHtml = "<h3>基本資料</h3>";
+                var shipInfoPointHtml = "<h3>基本資料</h3><div class=\"data-group\">";
                 axios.get(mapData.data.Api.shipDataUrl + MMSI)
                 .then( function(response){
                     mapData.data.apiReturnData = response.data;
@@ -84,7 +84,7 @@ var mapData = {
                     shipInfoPointHtml += "<div class=\"txt-group\"><h4>通信設備種類(2)</h4><p><span>"+mapData.data.apiReturnData.DeviceType2+"</span></p></div>";
                     shipInfoPointHtml += "<div class=\"txt-group\"><h4>VMS編碼(2)</h4><p><span>"+mapData.data.apiReturnData.VmsNumber2+"</span></p></div>";
                     shipInfoPointHtml += "<div class=\"txt-group\"><h4>船舶識別碼</h4><p><span>"+mapData.data.apiReturnData.MmsiNo+"</span></p></div>";
-                    shipInfoPointHtml += "<div class=\"txt-group\"><h4>IMO識別碼</h4><p><span>"+mapData.data.apiReturnData.ImoNo+"</span></p></div>";    
+                    shipInfoPointHtml += "<div class=\"txt-group\"><h4>IMO識別碼</h4><p><span>"+mapData.data.apiReturnData.ImoNo+"</span></p></div></div>";
                     document.getElementById('shipInfoPoint').innerHTML = shipInfoPointHtml;  
                     mapData.methods.features1.getShipDetailData()                                                        
                 })
@@ -95,7 +95,7 @@ var mapData = {
             getShipDetailData:function(){                            
                  //API回傳 船體資料由此指定
                  //8跟9 為ratio button  待API回來看資料內容
-                 var shipTravelerPointHtml = "<h3>船體資料</h3>";
+                 var shipTravelerPointHtml = "<h3>船體資料</h3><div class=\"data-group\">";
                  shipTravelerPointHtml += "<div class=\"txt-group\"><h4>總噸位</h4><p><span>"+mapData.data.apiReturnData.ShipGrossTon+"</span></p></div>";
                  shipTravelerPointHtml += "<div class=\"txt-group\"><h4>通常航速</h4><p><span>"+mapData.data.apiReturnData.AvgSpeed+"</span></p></div>";
                  shipTravelerPointHtml += "<div class=\"txt-group\"><h4>凈噸位</h4><p><span>"+mapData.data.apiReturnData.ShipNetTon+"</span></p></div>";
@@ -106,7 +106,7 @@ var mapData = {
                  shipTravelerPointHtml += "<div class=\"txt-group\"><h4>船長</h4><p><span>"+mapData.data.apiReturnData.ShipLenBP+"</span></p></div>";
                  shipTravelerPointHtml += "<div class=\"txt-group\"><h4>載重噸位</h4><p><span>"+mapData.data.apiReturnData.ShipDwt+"</span></p></div>";
                  shipTravelerPointHtml += "<div class=\"txt-group\"><h4>寬度</h4><p><span>"+mapData.data.apiReturnData.ShipBre+"</span></p></div>";
-                 shipTravelerPointHtml += "<div class=\"txt-group\"><h4>深度</h4><p><span>"+mapData.data.apiReturnData.ShipDep+"</span></p></div>";               
+                 shipTravelerPointHtml += "<div class=\"txt-group\"><h4>深度</h4><p><span>"+mapData.data.apiReturnData.ShipDep+"</span></p></div></div>";               
               
                  document.getElementById('shipTravelerPoint').innerHTML = shipTravelerPointHtml;  
                  mapData.methods.features1.getShipInOutPointData();          
@@ -122,7 +122,7 @@ var mapData = {
             }).then(function (response) {
                 var results = response.data;
 
-                var shipInOutPointHtml =  '<h3>進出港資訊</h3>';
+                var shipInOutPointHtml =  '<h3>進出港資訊</h3><div class=\"data-group\">';
                 shipInOutPointHtml += '<ul class="list">';
                
                shipInOutPointHtml += '<li class="title">';
@@ -154,7 +154,7 @@ var mapData = {
                     }else{
                         alert("無進出港資訊!!");
                     }
-                    shipInOutPointHtml += '</ul>';
+                    shipInOutPointHtml += '</ul></div>';
                     document.getElementById('shipInOutPoint').innerHTML = shipInOutPointHtml;  
                 }else{
                     alert("發生錯誤!!");

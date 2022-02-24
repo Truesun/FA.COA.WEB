@@ -22,7 +22,7 @@
 	<!-- 日期選擇樣式 -->
 	<link rel="stylesheet" href="css/datepicker.min.css">
 	<link rel="stylesheet" href="css/all.min.css">
-	<link rel="stylesheet" href="css/siitech_sty.css">
+	<link rel="stylesheet" href="css/fa_siitech_sty.css">
 
 	<!-- openlayer Css -->
 	<link rel="stylesheet" href="css/map/ol.css">
@@ -132,13 +132,20 @@
 					<div class="act-mask"></div>
 				</label>
 			</div>
-			<div class="btn-top-box" id="btnPageInOutPort">
+			<div class="btn-top-box">
 				<label for="searchShipInOut">
 					<img src="img/icon_search_out_in.svg" alt="">
-					<span>進出港查詢</span>
+					<span>查詢</span>
 					<input type="checkbox" name="searchShipInOut" id="searchShipInOut" value="">
 					<div class="act-mask"></div>
 				</label>
+				<div class="menu-sub-box">
+					<div class="menu-sub">
+						<div class="menu-btn" id="btnPageInOutPort">進出港查詢</div>
+						<div class="menu-btn">事件查詢</div>
+						<div class="menu-btn">AIS資料下載</div>
+					</div>
+				</div>
 			</div>
 
 			<div class="select-wrap">
@@ -871,7 +878,7 @@
 		</div>
 
 		<!-- 進出港查詢 -->
-		<div class="tit position-box" id="pageInOutPort" style="display:none;">
+		<div class="tit position-box position-box-inout" id="pageInOutPort" style="display:none;">
 			<h2>
 				進出口查詢
 				<div class="btn-close">
@@ -997,7 +1004,7 @@
 
 
 		<!-- MTNet & AIS layout page -->
-		<div class="tit position-box" id="pageShipDetial" style="display:none;">
+		<div class="tit position-box mtnet-box" id="pageShipDetial" style="display:none;">
 			<h2>
 				<span>JGJ AIS TEST SHIPJGJ</span> 詳細資訊
 				<div class="btn-unfold">
@@ -1007,16 +1014,57 @@
 					<img src="img/icon_close.svg" alt="">
 				</div>
 			</h2>
-			<div class="tap-group">
+			<!-- <div class="tap-group">
 				<div class="tap-left-group">
 					<div class="btn-tab act" id="shipInfoPage">基本資料</div>
 					<div class="btn-tab" id="shipTravelerPage">船體資料</div>
 					<div class="btn-tab" id="shipInOutPort">進出口資訊</div>
 				</div>
-			</div>
+			</div> -->
 
 			<!-- MTNet -->
 			<div class="inline-cont inline-cont-h" id="mtnetBox" style="display:;">
+				<!-- 20220224 新增區塊 主要資料區 -->
+				<div class="info-group">
+					<div class="data-group on">
+						<div class="txt-group">
+							<h4>漁船編號</h4>
+							<p>
+								<span>013647</span>
+							</p>
+						</div>
+						<div class="txt-group">
+							<h4>中文船名</h4>
+							<p>
+								<span>大益</span>
+							</p>
+						</div>
+						<div class="txt-group">
+							<h4>漁船別</h4>
+							<p>
+								<span>大型漁船</span>
+							</p>
+						</div>
+						<div class="txt-group">
+							<h4>所屬漁會</h4>
+							<p>
+								<span>台灣漁會</span>
+							</p>
+						</div>
+						<div class="txt-group">
+							<h4>主漁業經營種類</h4>
+							<p>
+								<span>帝王蟹</span>
+							</p>
+						</div>
+						<div class="txt-group">
+							<h4>總噸位</h4>
+							<p>
+								<span>30</span>
+							</p>
+						</div>
+					</div>
+				</div>
 				<div class="info-group" id="shipInfoPoint">
 					<!-- <h3>基本資料</h3>
 					<div class="txt-group">
@@ -1294,6 +1342,67 @@
 							<span name="ship-basic" id="ship-detail20">11.00</span> 節
 						</p>
 					</div> -->
+				</div>
+
+				<!-- 20220224 新增船員名單 -->
+				<div class="info-group" id="shipMemberPoint">
+					<h3>船員名單</h3>
+					<div class="data-group">
+						<div class="table-scroll" style="margin: 0 0 8px;">
+							<table class="siitech-table" style="width: 1200px; margin: 0;">
+								<tbody>
+									<tr>
+										<th>中文姓名(英文姓名)</th>
+										<th>身分證字號(護照號碼)</th>
+										<th>手冊有效日期</th>
+										<th>職務別</th>
+										<th>船員手冊編號</th>
+										<th>任事日期</th>
+										<th>卸事日期</th>
+										<th>電話</th>
+										<th>手機號碼欄位</th>
+										<th>地址(國籍)</th>
+									</tr>
+									<tr>
+										<td>劉重工</td>
+										<td>F123456789</td>
+										<td>2020-01-01</td>
+										<td>船員</td>
+										<td>9274618</td>
+										<td>2018-01-01</td>
+										<td>2024-01-01</td>
+										<td>-</td>
+										<td>0981726662</td>
+										<td>台灣</td>
+									</tr>
+									<tr>
+										<td>李世賢</td>
+										<td>H123126789</td>
+										<td>2020-01-01</td>
+										<td>船員</td>
+										<td>9274618</td>
+										<td>2018-01-01</td>
+										<td>2024-01-01</td>
+										<td>-</td>
+										<td>0981726662</td>
+										<td>台灣</td>
+									</tr>
+									<tr>
+										<td>陳聯文</td>
+										<td>A123456789</td>
+										<td>2020-01-01</td>
+										<td>船員</td>
+										<td>9274618</td>
+										<td>2018-01-01</td>
+										<td>2024-01-01</td>
+										<td>-</td>
+										<td>0981726662</td>
+										<td>台灣</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</div>
 
 				<div class="info-group" id="shipInOutPoint">

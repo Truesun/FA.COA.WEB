@@ -67,59 +67,25 @@ $(function () {
     //     })
     // }
 
-    //展開收合
-    const mtnetBoxObj = document.querySelector('#mtnetBox');
-    mtnetBoxObj.addEventListener('click',function(e){
-        let clickObj = e.target;
-        let clickObjName = e.target.tagName;
-        // console.log(clickObjName);
-        if( clickObjName === 'H3'){
-            let dataObj = clickObj.nextElementSibling;
-            let dataObjName = clickObj.nextElementSibling.className;
-            // console.log(dataObjName);
-            if( dataObjName != 'data-group on'){
-                clickObj.classList.add('less');
-                dataObj.classList.add('on');
-            }else{
-                clickObj.classList.remove('less');
-                dataObj.classList.remove('on');
+    //menet資料scroll to
+    $('.tap-left-group div').each(function (index, item) {
+        $(this).on('click', function () {
+            var shipInfoPoint = $('#shipInfoPoint').position().top;
+            var shipTravelerPoint = $('#shipTravelerPoint').position().top;
+            var shipInOutPoint = $('#shipInOutPoint').position().top;
+            $(".tap-left-group div").removeClass("act");
+            $(this).addClass("act");
+            var btnTarget = $(this).attr('id');
+            if (btnTarget === "shipInfoPage") {
+                $("#mtnetBox").stop().animate({ scrollTop: shipInfoPoint - 10 }, 500);
+            } else if (btnTarget === "shipTravelerPage") {
+                $("#mtnetBox").stop().animate({ scrollTop: shipTravelerPoint - 10 }, 500);
+            } else if (btnTarget === "shipInOutPort") {
+                $("#mtnetBox").stop().animate({ scrollTop: shipInOutPoint - 10 }, 500);
             }
-        }
-    })
+        });
+    });
 
-
-    // const item = document.querySelectorAll('.f-list > li');
-    // for( let i =0; i < item.length ; i++){
-    //     item[i].addEventListener('click',()=>{
-    //         //定義子選單
-    //         const itemBox = item[i].querySelector('.f-desc');
-    //         const itemCont = item[i].querySelector('.f-desc-h');
-            
-    //         //取得總高
-    //         let itemBoxHeight = itemCont.clientHeight;
-
-    //         //判斷是否有open
-    //         let hasOpen = item[i].classList.toggle('open');
-    //         if( hasOpen ){
-    //                 //先全部移除open
-    //                 //- for( let x = 0; x< item.length; x++){
-    //                 //- 	item[x].classList.remove('open');
-    //                 //- 	//- item[x].querySelector('.icon-more').classList.remove('less');
-    //                 //- 	//- console.log('跑移除回圈')
-    //                 //- 	const reItemBox = item[x].querySelector('.f-desc');
-    //                 //- 	reItemBox.style.height = '0';
-    //                 //- }
-    //                 itemBox.style.height = itemBoxHeight+'px';
-    //                 item[i].classList.add('open');
-    //         }else{
-    //                 itemBox.style.height = '0';
-    //                 item[i].classList.remove('open');
-    //         }
-    //     })
-    // }
-
-    
-    
 
     
     var coordinateType = 0;
@@ -246,7 +212,7 @@ $(function () {
             $("#radiusBox").show();
         } else {
             $("#radiusBox").hide();
-        }
+        }    
     });
 
     $("#btnGpsOpen").on("click", function () {
@@ -296,17 +262,13 @@ $(function () {
     });
 
     //開啟進出港查詢
-    var inOutPageStatus = 0;
     $("#btnPageInOutPort").on("click", function () {
-        $("#pageInOutPort").show();
+        if ($(this).find("input").prop("checked") === true) {
+            $("#pageInOutPort").show();
+        } else {
+            $("#pageInOutPort").hide();
+        }
     });
-    // $("#btnPageInOutPort").on("click", function () {
-    //     if ($(this).find("input").prop("checked") === true) {
-    //         $("#pageInOutPort").show();
-    //     } else {
-    //         $("#pageInOutPort").hide();
-    //     }
-    // });
 
 
 
@@ -316,26 +278,4 @@ $(function () {
 function pageShipDetial(){
     var pageShipDetial = document.querySelector('#pageShipDetial');
     pageShipDetial.style.display= 'block';
-    
-    //menet資料scroll to
-    $('.tap-left-group div').each(function (index, item) {
-        var shipInfoPoint = $('#shipInfoPoint').position().top;
-        var shipTravelerPoint = $('#shipTravelerPoint').position().top;
-        var shipInOutPoint = $('#shipInOutPoint').position().top;
-        $(this).on('click', function () {
-            $(".tap-left-group div").removeClass("act");
-            $(this).addClass("act");
-            var btnTarget = $(this).attr('id');
-            if (btnTarget === "shipInfoPage") {
-                $("#mtnetBox").stop().animate({ scrollTop: shipInfoPoint - 10 }, 500);
-            } else if (btnTarget === "shipTravelerPage") {
-                $("#mtnetBox").stop().animate({ scrollTop: shipTravelerPoint - 10 }, 500);
-            } else if (btnTarget === "shipInOutPort") {
-                $("#mtnetBox").stop().animate({ scrollTop: shipInOutPoint - 10 }, 500);
-            }
-            console.log('1:',shipInfoPoint,'2:',shipTravelerPoint,'3:',shipInOutPoint);
-        });
-    });
 }
-
-
